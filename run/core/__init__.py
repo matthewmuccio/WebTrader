@@ -10,7 +10,6 @@ from core.controllers.featured import controller as featured
 
 def keymaker(omnibus, filename="secret_key"):
 	pathname = os.path.join(omnibus.instance_path, filename)
-	print(pathname)
 	try:
 		print("Trying to find a directory labelled \"instance.\"")
 		print("Trying to find a file labelled \"secret_key.\"")
@@ -20,7 +19,7 @@ def keymaker(omnibus, filename="secret_key"):
 	except IOError:
 		parent_directory = os.path.dirname(pathname)
 		if not os.path.isdir(parent_directory):
-			print("Cannot find a directory called labelled \"instance\" ...")
+			print("Cannot find a directory called labelled \"instance.\"")
 			print("Making a directory labelled \"instance.\"")
 			os.system("mkdir -p {0}".format(parent_directory))
 		print("Writing to a file labelled \"secret_key.\"")

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# WSGI: Web service gateway interface
 
 
 from core import omnibus
