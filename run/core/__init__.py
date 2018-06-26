@@ -6,6 +6,7 @@ import os
 from flask import Flask
 
 from core.controllers.featured import controller as featured
+from core.controllers.general import controller as general
 
 
 def keymaker(omnibus, filename="secret_key"):
@@ -29,6 +30,7 @@ def keymaker(omnibus, filename="secret_key"):
 omnibus = Flask(__name__)
 
 omnibus.register_blueprint(featured)
+omnibus.register_blueprint(general)
 
 # TODO: Write the following function.
 keymaker(omnibus)

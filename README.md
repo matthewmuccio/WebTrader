@@ -1,5 +1,5 @@
 # FlaskEcommerceWebApp
-A simple e-commerce web app built with the Flask microframework.
+A simple e-commerce web app built with the Flask web microframework and Bootstrap framework for the front-end.
 Porting my command-line application TerminalTrader (https://github.com/matthewmuccio/TerminalTrader) to a large-scale Flask web application with a front-end interface.
 
 Process
