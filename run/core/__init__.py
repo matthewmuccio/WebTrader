@@ -8,6 +8,7 @@ from flask import Flask
 from core.controllers.signup import controller as signup
 from core.controllers.login import controller as login
 from core.controllers.dashboard import controller as dashboard
+from core.controllers.search import controller as search
 
 
 def keymaker(omnibus, filename="secret_key"):
@@ -33,6 +34,7 @@ omnibus = Flask(__name__)
 omnibus.register_blueprint(signup)
 omnibus.register_blueprint(login)
 omnibus.register_blueprint(dashboard)
+omnibus.register_blueprint(search)
 
-# TODO: Write the following function.
+# Creates a private 
 keymaker(omnibus)

@@ -16,6 +16,6 @@ def show_signup():
 		password1 = request.form["password1"]
 		password2 = request.form["password2"]
 		if email == "me@matthewmuccio.com" and password1 == password2:
-			return redirect("/dashboard")
+			return render_template("dashboard.html")
 		else:
-			return redirect("/")
+			return render_template("signup.html")

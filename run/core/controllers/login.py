@@ -15,6 +15,6 @@ def show_login():
 		email = request.form["email"]
 		password = request.form["password"]
 		if email == "me@matthewmuccio.com" and password == "password":
-			return redirect("/dashboard")
+			return render_template("dashboard.html")
 		else:
-			return redirect("/login")
+			return render_template("login.html")
