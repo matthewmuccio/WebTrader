@@ -12,9 +12,9 @@ def show_login():
 		return render_template("login.html")
 	# Assumes it is a POST request.
 	else:
-		email = request.form["email"]
+		username = request.form["username"]
 		password = request.form["password"]
-		if email == "me@matthewmuccio.com" and password == "password":
+		if username == "matthewmuccio" and password == "password":
 			return render_template("dashboard.html")
 		else:
 			return render_template("login.html")

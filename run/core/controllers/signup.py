@@ -12,10 +12,10 @@ def show_signup():
 		return render_template("signup.html")
 	# Assumes it is a POST request.
 	else:
-		email = request.form["email"]
+		username = request.form["username"]
 		password1 = request.form["password1"]
 		password2 = request.form["password2"]
-		if email == "me@matthewmuccio.com" and password1 == password2:
+		if username == "matthewmuccio" and password1 == password2:
 			return render_template("dashboard.html")
 		else:
 			return render_template("signup.html")
