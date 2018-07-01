@@ -19,3 +19,8 @@ def show_signup():
 			return render_template("dashboard.html")
 		else:
 			return render_template("signup.html")
+
+# Testing
+@controller.route("/base", methods=["GET"])
+def show_base():
+	return render_template("base.html")
