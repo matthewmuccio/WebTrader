@@ -36,5 +36,5 @@ omnibus.register_blueprint(login)
 omnibus.register_blueprint(dashboard)
 omnibus.register_blueprint(search)
 
-# Creates a private 
+# Creates a private key for the user.
 keymaker(omnibus)

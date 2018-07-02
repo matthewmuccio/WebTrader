@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request
 
 
 controller = Blueprint("search", __name__, url_prefix="/search")

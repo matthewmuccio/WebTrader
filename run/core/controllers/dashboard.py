@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 
 
 controller = Blueprint("dashboard", __name__, url_prefix="/dashboard")
@@ -33,6 +33,11 @@ def show_quote():
 @controller.route("/portfolio", methods=["GET"])
 def show_portfolio():
 	return render_template("portfolio.html")
+
+@controller.route("/logout", methods=["GET"])
+def logout():
+	session.pop("username", None)
+	return render_template("login.html")
 
 @controller.route("/<text>", methods=["GET"])
 def show_dash(text):
