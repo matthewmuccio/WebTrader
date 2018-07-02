@@ -1,44 +1,68 @@
 #!/usr/bin/env python3
 
 
-from flask import Blueprint, render_template, session
+from flask import Blueprint, redirect, render_template, session, url_for
 
 
 controller = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
 @controller.route("/", methods=["GET"])
 def show_dashboard():
-	return render_template("dashboard.html")
+	if "username" in session:
+		return render_template("dashboard.html")
+	else:
+		return redirect(url_for("signup.show_signup"))
 
 @controller.route("/balance", methods=["GET"])
 def show_balance():
-	return render_template("balance.html")
+	if "username" in session:
+		return render_template("balance.html")
+	else:
+		return redirect(url_for("signup.show_signup"))
 
 @controller.route("/buy", methods=["GET"])
 def show_buy():
-	return render_template("buy.html")
+	if "username" in session:
+		return render_template("buy.html")
+	else:
+		return redirect(url_for("signup.show_signup"))
 
 @controller.route("/sell", methods=["GET"])
 def show_sell():
-	return render_template("sell.html")
+	if "username" in session:
+		return render_template("sell.html")
+	else:
+		return redirect(url_for("signup.show_signup"))
 
 @controller.route("/lookup", methods=["GET"])
 def show_lookup():
-	return render_template("lookup.html")
+	if "username" in session:
+		return render_template("lookup.html")
+	else:
+		return redirect(url_for("signup.show_signup"))
 
 @controller.route("/quote", methods=["GET"])
 def show_quote():
-	return render_template("quote.html")
+	if "username" in session:
+		return render_template("quote.html")
+	else:
+		return redirect(url_for("signup.show_signup"))
 
 @controller.route("/portfolio", methods=["GET"])
 def show_portfolio():
-	return render_template("portfolio.html")
+	if "username" in session:
+		return render_template("portfolio.html")
+	else:
+		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/logout", methods=["GET"])
-def logout():
+@controller.route("/signout", methods=["GET"])
+def signout():
 	session.pop("username", None)
-	return render_template("login.html")
+	return redirect(url_for("login.show_login"))
 
 @controller.route("/<text>", methods=["GET"])
 def show_dash(text):
-	return render_template("dashboard.html")
+	if "username" in session:
+		return redirect(url_for("dashboard.show_dashboard"))
+	else:
+		return redirect(url_for("signup.show_signup"))
