@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 
-from flask import Blueprint, redirect, render_template, request, session, url_for
+from flask import abort, Blueprint, redirect, render_template, request, session, url_for
 
 
 controller = Blueprint("signup", __name__, url_prefix="/")
 
-@controller.route("/", methods=["GET", "POST"])
+@controller.route("", methods=["GET", "POST"])
 def show_signup():
 	if "username" in session:
 		return redirect(url_for("dashboard.show_dashboard"))
@@ -24,12 +24,23 @@ def show_signup():
 			else:
 				return render_template("signup.html")
 
-@controller.route("/<text>", methods=["GET"])
-def show_signup2(text):
+#@controller.route("/<text>", methods=["GET"])
+#def show_signup2(text):
+#	if "username" in session:
+#		return redirect(url_for("dashboard.show_dashboard"))
+#	else:
+#		return redirect(url_for("signup.show_signup"))
+
+@controller.route("/<path:path>", methods=["GET"])
+def show_404(path):
 	if "username" in session:
 		return redirect(url_for("dashboard.show_dashboard"))
 	else:
-		return redirect(url_for("signup.show_signup"))
+		abort(404)
+
+@controller.errorhandler(404)
+def page_not_found(e):
+	return render_template("404.html"), 404
 
 # Testing
 @controller.route("/base", methods=["GET"])

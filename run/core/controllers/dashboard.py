@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-from flask import Blueprint, redirect, render_template, session, url_for
+from flask import abort, Blueprint, redirect, render_template, session, url_for
 
 
 controller = Blueprint("dashboard", __name__, url_prefix="/dashboard")
@@ -57,12 +57,19 @@ def show_portfolio():
 
 @controller.route("/signout", methods=["GET"])
 def signout():
-	session.pop("username", None)
-	return redirect(url_for("login.show_login"))
+	if "username" in session:
+		session.pop("username", None)
+		return redirect(url_for("login.show_login"))
+	else:
+		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/<text>", methods=["GET"])
-def show_dash(text):
+@controller.route("/<path:path>", methods=["GET"])
+def show_404(path):
 	if "username" in session:
 		return redirect(url_for("dashboard.show_dashboard"))
 	else:
-		return redirect(url_for("signup.show_signup"))
+		abort(404)
+
+@controller.errorhandler(404)
+def page_not_found(e):
+	return render_template("404.html"), 404

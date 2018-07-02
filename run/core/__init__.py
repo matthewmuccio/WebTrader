@@ -3,7 +3,7 @@
 
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 
 from core.controllers.signup import controller as signup
 from core.controllers.login import controller as login

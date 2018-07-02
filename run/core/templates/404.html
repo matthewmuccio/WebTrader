@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- https://getbootstrap.com/docs/4.1/examples/sign-in/ -->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
+
+    <title>Web Trader - 404</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for the login template. -->
+    <link href="{{ url_for('static', filename='login-styles.css') }}" rel="stylesheet">
+</head>
+
+<body class="text-center">
+    <form class="form-signin" method="POST">
+        <img class="mb-4" src="{{ url_for('static', filename='webtrader-icon.png') }}" alt="" width="72" height="72">
+        <h1 class="mb-4">Web Trader</h1>
+
+        <h1>404</h1>
+        <h1 style="font-size: 24px;">Page Not Found</h1>
+
+        <h1 style="font-size: 24px; color: gray;">Way to go, you broke it.</h1>
+
+        <div class="signup-button">
+            <div class="text-center">
+                <label>Return to the Previous Page</label>
+            </div>
+            <a href="{{ url_for('dashboard.show_dashboard') }}">
+                <button class="btn btn-lg btn-danger btn-block" type="button">Back</button>
+            </a>
+        </div>
+
+        <p class="mt-5 mb-3 text-muted">Copyright &copy; Matthew Muccio 2018</p>
+    </form>
+</body>
+
+</html>
