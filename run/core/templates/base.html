@@ -16,7 +16,7 @@
     <link href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/4.1/examples/dashboard/dashboard.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='base-styles.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -27,10 +27,17 @@
         </form>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-                <a class="nav-link" href="{{ url_for('dashboard.signout') }}">
-                    Sign out
-                    <span data-feather="log-out"></span>
-                </a>
+                <span class="nav-link">
+                    <a href="">
+                        {{ username }}
+                        <span data-feather="user"></span>
+                    </a>
+                    
+                    <a href="{{ url_for('dashboard.signout') }}">
+                        Sign out
+                        <span data-feather="log-out"></span>
+                    </a>
+                </span>
             </li>
         </ul>
     </nav>
