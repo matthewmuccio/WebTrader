@@ -62,14 +62,3 @@ def signout():
 		return redirect(url_for("login.show_login"))
 	else:
 		return redirect(url_for("signup.show_signup"))
-
-@controller.route("/<path:path>", methods=["GET"])
-def show_404(path):
-	if "username" in session:
-		return redirect(url_for("dashboard.show_dashboard"))
-	else:
-		abort(404)
-
-@controller.errorhandler(404)
-def page_not_found(e):
-	return render_template("404.html"), 404

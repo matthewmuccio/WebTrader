@@ -24,13 +24,7 @@ def show_signup():
 			else:
 				return render_template("signup.html")
 
-#@controller.route("/<text>", methods=["GET"])
-#def show_signup2(text):
-#	if "username" in session:
-#		return redirect(url_for("dashboard.show_dashboard"))
-#	else:
-#		return redirect(url_for("signup.show_signup"))
-
+# Handles page requests for non-existent pages (404 errors).
 @controller.route("/<path:path>", methods=["GET"])
 def show_404(path):
 	if "username" in session:
@@ -41,8 +35,3 @@ def show_404(path):
 @controller.errorhandler(404)
 def page_not_found(e):
 	return render_template("404.html"), 404
-
-# Testing
-@controller.route("/base", methods=["GET"])
-def show_base():
-	return render_template("base.html")
