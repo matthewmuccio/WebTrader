@@ -41,7 +41,7 @@ def create_account(username, password):
 # Logs in to account in users database table.
 def login(username, password):
 	if not username_exists(username):
-		return ["Sorry, there is no account with that username in our database."]
+		return ["Sorry, no account exists with that username.", "Please sign up for a Web Trader account to log in."]
 	elif not account_exists(username, password):
 		return ["Sorry, the password you entered was incorrect."]
 	password = encrypt_password(password)
@@ -51,7 +51,8 @@ def login(username, password):
 	result = len(cursor.fetchall()) == 1
 	cursor.close()
 	connection.close()
-	return ["Success!", "You have been logged in to your account."]
+	if result:
+		return ["Success!", "You have been logged in to your account."]
 
 ### SELECT (GET)
 

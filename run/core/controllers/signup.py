@@ -27,7 +27,7 @@ def show_signup():
 					session["username"] = username
 					session["active"] = True
 					return redirect(url_for("dashboard.show_dashboard"))
-				# If there was an issue creating the account (username already exists, account already exists, or username was invalid)
+				# If there was an issue creating the account (username already exists, account already exists, or username was invalid).
 				else:
 					return render_template("signup.html", response=response)
 			else:

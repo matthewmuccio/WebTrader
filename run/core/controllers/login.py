@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 
+from core.models import model
+
 from flask import Blueprint, redirect, render_template, request, session, url_for
 
 
@@ -17,10 +19,13 @@ def show_login():
 		else:
 			username = request.form["username"]
 			password = request.form["password"]
-			# TODO: Add database support for logging in
-			if username == "matthewmuccio" and password == "password":
+			# Attempts to log in to the account with the entered username and password.
+			response = model.login(username, password)
+			# If the user has successfully logged in to their account.
+			if "Success!" in response:
 				session["username"] = username
 				session["active"] = True
 				return redirect(url_for("dashboard.show_dashboard"))
+			# If there was an issue with logging in to the account (username or account does not exist).
 			else:
-				return render_template("login.html")
+				return render_template("login.html", response=response)
