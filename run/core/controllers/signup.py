@@ -31,7 +31,7 @@ def show_signup():
 				else:
 					return render_template("signup.html", response=response)
 			else:
-				return render_template("signup.html", response="Passwords did not match.")
+				return render_template("signup.html", response=["Passwords did not match."])
 
 # Handles page requests for non-existent pages (404 errors).
 @controller.route("/<path:path>", methods=["GET"])
