@@ -23,7 +23,7 @@ def show_signup():
 				# Attempts to create an account with the entered username and password.
 				response = model.create_account(username, password1)
 				# If the user's account has been successfully created.
-				if "Success" in response:
+				if "Success!" in response:
 					session["username"] = username
 					session["active"] = True
 					return redirect(url_for("dashboard.show_dashboard"))
