@@ -21,6 +21,8 @@ def create_account(username, password):
 		return ["Sorry, the username you entered is already taken."]
 	elif not valid_username(username):
 		return ["Sorry, the username you entered is invalid.", "Usernames must contain at least three characters.", "They can only contain lowercase letters, numbers, and underscores."]
+	elif not valid_password(password):
+		return ["Sorry, the password you entered is invalid.", "Passwords must contain at least eight characters."]
 	password = encrypt_password(password)
 	default_balance = 100000.00
 	connection = sqlite3.connect("master.db", check_same_thread=False)
@@ -80,6 +82,11 @@ def account_exists(username, password):
 # Checks if a username is valid.
 def valid_username(username):
 	return re.search(r"\A[a-z0-9_]{3,}\Z", username)
+
+# Checks if a password is valid.
+def valid_password(password):
+	regex = r"\A[A-Za-z0-9\"\^\-\]\\~!@#$%&*()_+=|{}[:;'<>,.?/]{8,}\Z"
+	return re.search(regex, password)
 
 # Gets the balance value from the row in the users database table for the given username.
 def get_balance(username):
