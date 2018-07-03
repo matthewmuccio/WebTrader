@@ -29,12 +29,17 @@ def keymaker(omnibus, filename="secret_key"):
 		os.system("head -c 24 /dev/urandom > {0}".format(pathname))
 		omnibus.config["SECRET_KEY"] = open(pathname, "rb").read()
 
+# Creates a new app.
 omnibus = Flask(__name__)
 
+# Registers blueprints of the controllers for the app.
 omnibus.register_blueprint(signup)
 omnibus.register_blueprint(login)
 omnibus.register_blueprint(dashboard)
 omnibus.register_blueprint(search)
+
+# Enables debug mode.
+omnibus.config["DEBUG"] = True
 
 # Creates a private key for the user.
 keymaker(omnibus)
