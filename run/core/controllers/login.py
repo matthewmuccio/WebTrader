@@ -8,7 +8,7 @@ controller = Blueprint("login", __name__, url_prefix="/login")
 
 @controller.route("/", methods=["GET", "POST"])
 def show_login():
-	if "username" in session:
+	if "username" in session and "active" in session:
 		return redirect(url_for("dashboard.show_dashboard"))
 	else:
 		if request.method == "GET":
@@ -19,6 +19,7 @@ def show_login():
 			session["username"] = username
 			password = request.form["password"]
 			if username == "matthewmuccio" and password == "password":
+				session["active"] = True
 				return redirect(url_for("dashboard.show_dashboard"))
 			else:
 				return render_template("login.html")

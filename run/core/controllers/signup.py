@@ -8,18 +8,19 @@ controller = Blueprint("signup", __name__, url_prefix="/")
 
 @controller.route("", methods=["GET", "POST"])
 def show_signup():
-	if "username" in session:
-		return redirect(url_for("dashboard.show_dashboard"))
+	if "username" in session and "active" in session:
+			return redirect(url_for("dashboard.show_dashboard"))
 	else:
 		if request.method == "GET":
 			return render_template("signup.html")
 		# Assumes it is a POST request.
 		else:
 			username = request.form["username"]
-			session["username"] = username
 			password1 = request.form["password1"]
 			password2 = request.form["password2"]
 			if username == "matthewmuccio" and password1 == password2:
+				session["username"] = username
+				session["active"] = True
 				return redirect(url_for("dashboard.show_dashboard"))
 			else:
 				return render_template("signup.html")
@@ -27,7 +28,7 @@ def show_signup():
 # Handles page requests for non-existent pages (404 errors).
 @controller.route("/<path:path>", methods=["GET"])
 def show_404(path):
-	if "username" in session:
+	if "username" in session and "active" in session:
 		return redirect(url_for("dashboard.show_dashboard"))
 	else:
 		abort(404)
