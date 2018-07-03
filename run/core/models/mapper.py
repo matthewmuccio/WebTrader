@@ -2,6 +2,7 @@
 
 
 import hashlib
+import re
 import sqlite3
 import time
 
@@ -18,6 +19,8 @@ def create_account(username, password):
 		return "Sorry, an account with that username and password already exists in our database. \nLog in with those credentials to access your account."
 	elif username_exists(username):
 		return "Sorry, the username you entered is already taken."
+	elif not valid_username(username):
+		return "Sorry, the username you entered is invalid. \nUsernames can only contain lowercase letters, numbers, and underscores."
 	password = encrypt_password(password)
 	default_balance = 100000.00
 	connection = sqlite3.connect("master.db", check_same_thread=False)
@@ -72,6 +75,10 @@ def account_exists(username, password):
 	cursor.close()
 	connection.close()
 	return result
+
+# Checks if a username is valid.
+def valid_username(username):
+	return re.search(r"\A[a-z0-9_]*\Z", username)
 
 # Gets the balance value from the row in the users database table for the given username.
 def get_balance(username):

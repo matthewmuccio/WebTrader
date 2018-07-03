@@ -16,9 +16,10 @@ def show_login():
 		# Assumes it is a POST request.
 		else:
 			username = request.form["username"]
-			session["username"] = username
 			password = request.form["password"]
+			# TODO: Add database support for logging in
 			if username == "matthewmuccio" and password == "password":
+				session["username"] = username
 				session["active"] = True
 				return redirect(url_for("dashboard.show_dashboard"))
 			else:
