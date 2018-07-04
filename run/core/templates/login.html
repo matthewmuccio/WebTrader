@@ -23,6 +23,13 @@
     <form class="form-signin" method="POST">
         <img class="mb-4" src="{{ url_for('static', filename='webtrader-icon.png') }}" alt="" width="72" height="72">
         <h1 class="mb-4">Web Trader</h1>
+        {% if response %}
+        <div style="margin-top: -8px; padding-bottom: 8px; line-height: 6px;">
+        {% for line in response %}
+            <p style="font-size: 12px; color: red;">{{ line }}</p>
+        {% endfor %}
+        </div>
+        {% endif %}
         
         <label for="inputEmail" class="sr-only">Username</label>
         <input name="username" type="text" id="inputEmail" class="form-control" placeholder="Username" required autofocus>

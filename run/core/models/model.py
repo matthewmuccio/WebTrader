@@ -3,8 +3,8 @@
 
 from operator import itemgetter
 
-import mapper
-import wrapper
+from core.models import mapper
+from core.models import wrapper
 
 
 ### User

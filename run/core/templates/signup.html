@@ -24,6 +24,13 @@
             <img class="mb-4" src="{{ url_for('static', filename='webtrader-icon.png') }}" alt="" width="72" height="72">
             <h1 class="h3 mb-3">Web Trader</h1>
             <p>A trading web application for buying and selling stock, among other trading operations, with real market data.</p>
+            {% if response %}
+            <div style="line-height: 6px;">
+            {% for line in response %}
+                <p style="font-size: 12px; color: red;">{{ line }}</p>
+            {% endfor %}
+            </div>
+            {% endif %}
         </div>
 
         <div class="form-label-group">
