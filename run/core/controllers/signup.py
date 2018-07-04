@@ -8,7 +8,7 @@ controller = Blueprint("signup", __name__, url_prefix="/")
 
 @controller.route("", methods=["GET", "POST"])
 def show_signup():
-	if "username" in session and "active" in session:
+	if "username" in session:
 			return redirect(url_for("dashboard.show_dashboard"))
 	else:
 		if request.method == "GET":
@@ -25,7 +25,6 @@ def show_signup():
 				# If the user's account has been successfully created.
 				if "Success!" in response:
 					session["username"] = username
-					session["active"] = True
 					return redirect(url_for("dashboard.show_dashboard"))
 				# If there was an issue creating the account (username already exists, account already exists, or username was invalid).
 				else:
@@ -36,7 +35,7 @@ def show_signup():
 # Handles page requests for non-existent pages (404 errors).
 @controller.route("/<path:path>", methods=["GET"])
 def show_404(path):
-	if "username" in session and "active" in session:
+	if "username" in session:
 		return redirect(url_for("dashboard.show_dashboard"))
 	else:
 		abort(404)

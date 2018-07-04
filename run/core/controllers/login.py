@@ -10,7 +10,7 @@ controller = Blueprint("login", __name__, url_prefix="/login")
 
 @controller.route("/", methods=["GET", "POST"])
 def show_login():
-	if "username" in session and "active" in session:
+	if "username" in session:
 		return redirect(url_for("dashboard.show_dashboard"))
 	else:
 		if request.method == "GET":
@@ -24,7 +24,6 @@ def show_login():
 			# If the user has successfully logged in to their account.
 			if "Success!" in response:
 				session["username"] = username
-				session["active"] = True
 				return redirect(url_for("dashboard.show_dashboard"))
 			# If there was an issue with logging in to the account (username or account does not exist).
 			else:
