@@ -71,19 +71,20 @@ def sell(ticker_symbol, trade_volume, username):
 	last_price = wrapper.get_last_price(ticker_symbol)
 	# Error handling: if the user enters a ticker symbol that does not exist.
 	if last_price == "exit":
-		print("The ticker symbol that you entered does not exist.")
-		return "exit"
+		return ["Sorry, the ticker symbol you entered does not exist."]
 	brokerage_fee = 6.95
 	# Error handling: if the user enters a trade volume that is not a number.
 	try:
 		balance_to_add = last_price * float(trade_volume) - brokerage_fee
 	except ValueError:
-		print("The trade volume you entered is not valid.")
-		return "exit"
+		return ["Sorry, the trade volume you entered is invalid."]
+		# Error handling: if the user enters a trade volume that is negative or 0.
+	if float(trade_volume) <= 0:
+		return ["Sorry, the trade volume you entered is invalid."]
 	# Checks if the user holds any stock from the company with ticker_symbol.
 	ticker_symbols = mapper.get_ticker_symbols(ticker_symbol, username)
 	if len(ticker_symbols) == 0:
-		return "Error: You do not hold any shares from that company."
+		return ["Sorry, you do not hold any shares from that company."]
 	# Gets needed values from the user and holdings database tables.
 	balance = mapper.get_balance(username)
 	number_of_shares = mapper.get_number_of_shares(ticker_symbol, username)
@@ -110,10 +111,14 @@ def sell(ticker_symbol, trade_volume, username):
 		mapper.update_balance(new_balance, username)
 		# Inserts a new row to the orders database table after selling the stock.
 		mapper.insert_orders_row("sell", ticker_symbol, trade_volume, last_price, username)
-		return "Stock sell was successful."
+		# Returns the success message depending on how much stock the user bought (one or multiple).
+		if isclose(float(trade_volume), 1):
+			return ["Success! The trade was executed.", "You sold {0} share of {1} stock.".format(trade_volume, ticker_symbol.upper())]
+		else:
+			return ["Success! The trade was executed.", "You sold {0} shares of {1} stock.".format(trade_volume, ticker_symbol.upper())]
 	else:
 		# Returns error response.
-		return "Error: You do not have enough shares to sell to complete that trade."
+		return ["Sorry, you do not have the shares necessary to execute that trade."]
 
 # Calculates the new volume weighted average to update the holdings database table.
 def calculate_vwap(curr_price, curr_num_shares, new_price, new_num_shares):

@@ -46,12 +46,22 @@ def show_buy():
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/sell", methods=["GET"])
+@controller.route("/sell", methods=["GET", "POST"])
 def show_sell():
 	if "username" in session:
-		return render_template("sell.html", \
-								title="Sell", \
-								username=session["username"])
+		if request.method == "GET":
+			return render_template("sell.html", \
+									title="Sell", \
+									username=session["username"])
+		else:
+			ticker_symbol = request.form["ticker-symbol"]
+			trade_volume = request.form["trade-volume"]
+			# Attempts to sell stock and stores the response.
+			response = model.sell(ticker_symbol, trade_volume, session["username"])
+			return render_template("sell.html", \
+									title="Sell", \
+									username=session["username"], \
+									response=response)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
