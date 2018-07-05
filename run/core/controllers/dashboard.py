@@ -37,19 +37,12 @@ def show_buy():
 		else:
 			ticker_symbol = request.form["ticker-symbol"]
 			trade_volume = request.form["trade-volume"]
-			# Attempts to purchase stock.
+			# Attempts to purchase stock and stores the response.
 			response = model.buy(ticker_symbol, trade_volume, session["username"])
-			# If the user has successfully purchased the stock.
-			if "Success!" in response:
-				return render_template("buy.html", \
-										title="Buy", \
-										username=session["username"], \
-										response=response)
-			else:
-				return render_template("buy.html", \
-										title="Buy", \
-										username=session["username"], \
-										response=response)
+			return render_template("buy.html", \
+									title="Buy", \
+									username=session["username"], \
+									response=response)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
