@@ -97,19 +97,19 @@
                     <h1 class="h2">Buy</h1>
                 </div>
 
-                <form class="form-signin" method="POST">
+                <form class="form" method="POST">
                     <div class="text-center mb-4">
-                        <p>Enter a ticker symbol (e.g., MSFT) and a trade volume below to purchase stock.</p>
+                        <p>Enter a ticker symbol (e.g., MSFT) and a trade volume to purchase stock.</p>
                     </div>
             
                     <div class="form-label-group">
-                        <input name="username" type="text" id="inputEmail" class="form-control" placeholder="Ticker Symbol" required autofocus>
-                        <label for="inputEmail">Ticker Symbol</label>
+                        <input name="ticker-symbol" type="text" id="input-ticker-symbol" class="form-control" placeholder="Ticker Symbol" required autofocus>
+                        <label for="input-ticker-symbol">Ticker Symbol</label>
                     </div>
             
                     <div class="form-label-group">
-                        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Trade Volume" required>
-                        <label for="inputPassword">Trade Volume</label>
+                        <input name="trade-volume" type="password" id="input-trade-volume" class="form-control" placeholder="Trade Volume" required>
+                        <label for="input-trade-volume">Trade Volume</label>
                     </div>
             
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Buy Stock</button>
