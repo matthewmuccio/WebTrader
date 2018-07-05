@@ -100,6 +100,18 @@
                 <form class="form" method="POST">
                     <div class="text-center mb-4">
                         <p>Enter a ticker symbol (e.g., MSFT) and a trade volume to purchase stock.</p>
+
+                        {% if response %}
+                        <div style="line-height: 6px;">
+                        {% for line in response %}
+                            {% if not "Sorry" in line %}
+                            <p style="font-size: 12px; color: green;">{{ line }}</p>
+                            {% else %}
+                            <p style="font-size: 12px; color: red;">{{ line }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
             
                     <div class="form-label-group">
@@ -108,7 +120,7 @@
                     </div>
             
                     <div class="form-label-group">
-                        <input name="trade-volume" type="password" id="input-trade-volume" class="form-control" placeholder="Trade Volume" required>
+                        <input name="trade-volume" type="text" id="input-trade-volume" class="form-control" placeholder="Trade Volume" required>
                         <label for="input-trade-volume">Trade Volume</label>
                     </div>
             

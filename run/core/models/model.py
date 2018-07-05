@@ -2,6 +2,7 @@
 
 
 from operator import itemgetter
+from math import isclose
 
 from core.models import mapper
 from core.models import wrapper
@@ -13,16 +14,17 @@ def buy(ticker_symbol, trade_volume, username):
 	last_price = wrapper.get_last_price(ticker_symbol)
 	# Error handling: if the user enters a ticker symbol that does not exist.
 	if last_price == "exit":
-		print("The ticker symbol that you entered does not exist.")
-		return "exit"
+		return ["Sorry, the ticker symbol you entered does not exist."]
 	balance = mapper.get_balance(username)
 	brokerage_fee = 6.95
 	# Error handling: if the user enters a trade volume that is not a number.
 	try:
 		transaction_cost = last_price * float(trade_volume) + brokerage_fee
 	except ValueError:
-		print("The trade volume you entered is not valid.")
-		return "exit"
+		return ["Sorry, the trade volume you entered is invalid."]
+	# Error handling: if the user enters a trade volume that is negative or 0.
+	if float(trade_volume) <= 0:
+		return ["Sorry, the trade volume you entered is invalid."]
 	# If the user has enough money in their account to execute the trade.
 	if transaction_cost < balance:
 		ticker_symbols = mapper.get_ticker_symbols(ticker_symbol, username)
@@ -35,7 +37,11 @@ def buy(ticker_symbol, trade_volume, username):
 			mapper.insert_holdings_row(ticker_symbol, trade_volume, last_price, username)
 			# Inserts a new row to the orders database table after buying the stock.
 			mapper.insert_orders_row("buy", ticker_symbol, trade_volume, last_price, username)
-			return "Stock purchase was successful."
+			# Returns the success message depending on how much stock the user bought (one or multiple).
+			if isclose(float(trade_volume), 1):
+				return ["Success! The trade was executed.", "You bought {0} share of {1} stock.".format(trade_volume, ticker_symbol.upper())]
+			else:
+				return ["Success! The trade was executed.", "You bought {0} shares of {1} stock.".format(trade_volume, ticker_symbol.upper())]
 		# If the user holds some stock from company with ticker_symbol.
 		else:
 			# Gets the number of shares from holdings database table for the company with ticker_symbol.
@@ -51,10 +57,14 @@ def buy(ticker_symbol, trade_volume, username):
 			mapper.update_number_of_shares(new_number_of_shares, ticker_symbol, username)
 			# Inserts a new row to the orders database table after buying the stock.
 			mapper.insert_orders_row("buy", ticker_symbol, trade_volume, last_price, username)
-			return "Stock purchase was successful."
+			# Returns the success message depending on how much stock the user bought (one or multiple).
+			if isclose(float(trade_volume), 1):
+				return ["Success! The trade was executed.", "You bought {0} share of {1} stock.".format(trade_volume, ticker_symbol.upper())]
+			else:
+				return ["Success! The trade was executed.", "You bought {0} shares of {1} stock.".format(trade_volume, ticker_symbol.upper())]
 	else:
 		# Returns error response.
-		return "Error: You do not have enough money in your balance to execute that trade."
+		return ["Sorry, you do not have the balance necessary to execute that trade."]
 
 # Sell
 def sell(ticker_symbol, trade_volume, username):

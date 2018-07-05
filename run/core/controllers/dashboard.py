@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-from flask import abort, Blueprint, redirect, render_template, session, url_for
+from flask import abort, Blueprint, redirect, render_template, request, session, url_for
 
 from core.models import model
 
@@ -27,12 +27,29 @@ def show_balance():
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/buy", methods=["GET"])
+@controller.route("/buy", methods=["GET", "POST"])
 def show_buy():
 	if "username" in session:
-		return render_template("buy.html", \
-								title="Buy", \
-								username=session["username"])
+		if request.method == "GET":
+			return render_template("buy.html", \
+									title="Buy", \
+									username=session["username"])
+		else:
+			ticker_symbol = request.form["ticker-symbol"]
+			trade_volume = request.form["trade-volume"]
+			# Attempts to purchase stock.
+			response = model.buy(ticker_symbol, trade_volume, session["username"])
+			# If the user has successfully purchased the stock.
+			if "Success!" in response:
+				return render_template("buy.html", \
+										title="Buy", \
+										username=session["username"], \
+										response=response)
+			else:
+				return render_template("buy.html", \
+										title="Buy", \
+										username=session["username"], \
+										response=response)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
