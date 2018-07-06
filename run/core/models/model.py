@@ -46,7 +46,7 @@ def buy(ticker_symbol, trade_volume, username):
 		else:
 			# Gets the number of shares from holdings database table for the company with ticker_symbol.
 			curr_number_of_shares = mapper.get_number_of_shares(ticker_symbol, username)
-			new_number_of_shares = curr_number_of_shares + int(trade_volume)
+			new_number_of_shares = curr_number_of_shares + float(trade_volume)
 			# Gets the last price stored in the holdings database table for a given ticker_symbol.
 			curr_price = mapper.get_last_price(ticker_symbol, username)
 			# Calculates the new VWAP based on the current values in the database table and the most recent (last) prices.
@@ -88,9 +88,9 @@ def sell(ticker_symbol, trade_volume, username):
 	# Gets needed values from the user and holdings database tables.
 	balance = mapper.get_balance(username)
 	number_of_shares = mapper.get_number_of_shares(ticker_symbol, username)
-	new_number_of_shares = number_of_shares - int(trade_volume)
+	new_number_of_shares = number_of_shares - float(trade_volume)
 	# If the user holds enough shares to complete their trade.
-	if int(trade_volume) <= number_of_shares:
+	if float(trade_volume) <= number_of_shares:
 		# If the new number of shares would be 0 after the user sells their shares.
 		if new_number_of_shares == 0:
 			# Deletes the row from holdings database table for company with ticker_symbol.
