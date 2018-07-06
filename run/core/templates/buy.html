@@ -95,17 +95,37 @@
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Buy</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <!--<div class="btn-group mr-2">
-                            <button class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button class="btn btn-sm btn-outline-secondary">Export</button>
-                            </div>
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <span data-feather="calendar"></span>
-                            This week
-                            </button>-->
-                    </div>
                 </div>
+
+                <form class="form" method="POST">
+                    <div class="text-center mb-4">
+                        <p>Enter a ticker symbol (e.g., MSFT) and a trade volume to purchase stock.</p>
+
+                        {% if response %}
+                        <div style="line-height: 6px;">
+                        {% for line in response %}
+                            {% if not "Sorry" in line %}
+                            <p style="font-size: 12px; color: green;">{{ line }}</p>
+                            {% else %}
+                            <p style="font-size: 12px; color: red;">{{ line }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+            
+                    <div class="form-label-group">
+                        <input name="ticker-symbol" type="text" id="input-ticker-symbol" class="form-control" placeholder="Ticker Symbol" required autofocus>
+                        <label for="input-ticker-symbol">Ticker Symbol</label>
+                    </div>
+            
+                    <div class="form-label-group">
+                        <input name="trade-volume" type="text" id="input-trade-volume" class="form-control" placeholder="Trade Volume" required>
+                        <label for="input-trade-volume">Trade Volume</label>
+                    </div>
+            
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Buy Stock</button>
+                </form>
             </main>
         </div>
     </div>
