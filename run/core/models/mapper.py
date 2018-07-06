@@ -158,6 +158,8 @@ def get_ticker_symbols_from_user(username):
 def get_holdings_dataframe(username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	df1 = pd.read_sql_query("SELECT * FROM holdings WHERE username=?", connection, params=[username])
+	if df1.empty:
+		return "empty"
 	df2 = df1[df1.columns.difference(["id", "username"])]
 	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
 	return df3

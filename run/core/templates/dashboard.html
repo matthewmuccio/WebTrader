@@ -113,7 +113,7 @@
                     <h2>Recent Trading Activity</h2>
                     <div class="col-md-9">
                         {% if buy_portfolio == "empty" and sell_portfolio == "empty" %}
-                            <h4 style="color: #e74c3c;">You have not made any trades.</h4>
+                            <h4 style="color: #e74c3c;">There are no trades to display.</h4>
                             <h4 style="color: #e74c3c;">Navigate to the <a href="{{ url_for('dashboard.show_buy') }}">Buy menu</a> to execute a trade.</h4>
                         {% elif sell_portfolio == "empty" %}
                             {{ buy_portfolio | safe }}

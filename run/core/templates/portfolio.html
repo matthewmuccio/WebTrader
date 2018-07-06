@@ -103,7 +103,12 @@
                     </div>
                 </div>
                 <center>
+                    {% if portfolio == "empty" %}
+                        <h4 style="color: #e74c3c;">There is no stock in your portfolio to display.</h4>
+                        <h4 style="color: #e74c3c;">Navigate to the <a href="{{ url_for('dashboard.show_buy') }}">Buy menu</a> to execute a trade.</h4>
+                    {% else %}
                     {{ portfolio | safe }}
+                    {% endif %}
                 </center>
             </main>
         </div>
