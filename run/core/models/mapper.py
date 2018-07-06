@@ -158,7 +158,15 @@ def get_ticker_symbols_from_user(username):
 def get_holdings_dataframe(username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	df = pd.read_sql_query("SELECT * FROM holdings WHERE username=?", connection, params=[username])
-	return df
+	dataframe = df[df.columns.difference(["id", "username"])]
+	return dataframe
+
+# Creates a new pandas DataFrame that contains the last 10 trades (in the orders database table) for the given user.
+def get_orders_dataframe(username, num):
+	connection = sqlite3.connect("master.db", check_same_thread=False)
+	df = pd.read_sql_query("SELECT * FROM ORDERS WHERE username=? ORDER BY unix_time DESC LIMIT ?", connection, params=[username, num])
+	dataframe = df[df.columns.difference(["id", "unix_time", "username"])]
+	return dataframe
 
 ### UPDATE / INSERT
 

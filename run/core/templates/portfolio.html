@@ -96,12 +96,15 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Portfolio</h1>
                 </div>
-
-                <center>
-                    <p><b>Liquid balance:</b> ${{ balance }}</p>
-                    <p><b>Estimated earnings in portfolio:</b> ${{ earnings }}</p>
-                    {{ portfolio | safe }}
-                </center>
+                <div class="text-center">
+                    <div style="line-height: 12px">
+                        <p><b>Liquid balance:</b> ${{ balance }}</p>
+                        <p><b>Estimated earnings in portfolio:</b> ${{ earnings }}</p>
+                    </div>
+                    <center>
+                        {{ portfolio | safe }}
+                    </center>
+                </div>
             </main>
         </div>
     </div>
