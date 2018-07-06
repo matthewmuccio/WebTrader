@@ -15,7 +15,7 @@ def show_dashboard():
 		return render_template("dashboard.html", \
 								title="Home", \
 								username=session["username"],
-								portfolio=portfolio.to_html())
+								portfolio=portfolio)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
@@ -112,7 +112,7 @@ def show_portfolio():
 								username=session["username"], \
 								balance=format(model.get_balance(session["username"]), ".2f"), \
 								earnings=format(model.get_earnings(session["username"]), ".2f"), \
-								portfolio=portfolio.to_html())
+								portfolio=portfolio)
 	else:
 		return redirect(url_for("signup.show_signup"))
 

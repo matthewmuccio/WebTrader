@@ -157,16 +157,18 @@ def get_ticker_symbols_from_user(username):
 # Creates a new pandas DataFrame that contains the rows in holdings database table for the given user.
 def get_holdings_dataframe(username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
-	df = pd.read_sql_query("SELECT * FROM holdings WHERE username=?", connection, params=[username])
-	dataframe = df[df.columns.difference(["id", "username"])]
-	return dataframe
+	df1 = pd.read_sql_query("SELECT * FROM holdings WHERE username=?", connection, params=[username])
+	df2 = df1[df1.columns.difference(["id", "username"])]
+	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
+	return df3
 
 # Creates a new pandas DataFrame that contains the last 10 trades (in the orders database table) for the given user.
 def get_orders_dataframe(username, num):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
-	df = pd.read_sql_query("SELECT * FROM ORDERS WHERE username=? ORDER BY unix_time DESC LIMIT ?", connection, params=[username, num])
-	dataframe = df[df.columns.difference(["id", "unix_time", "username"])]
-	return dataframe
+	df1 = pd.read_sql_query("SELECT * FROM ORDERS WHERE username=? ORDER BY unix_time DESC LIMIT ?", connection, params=[username, num])
+	df2 = df1[df1.columns.difference(["id", "unix_time", "username"])]
+	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
+	return df3
 
 ### UPDATE / INSERT
 
