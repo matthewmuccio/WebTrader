@@ -166,8 +166,9 @@ def get_holdings_dataframe(username):
 def get_orders_dataframe(username, transaction_type, num):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	df1 = pd.read_sql_query("SELECT * FROM orders WHERE username=? AND transaction_type=? ORDER BY unix_time DESC LIMIT ?", connection, params=[username, transaction_type, num])
+	if df1.empty:
+		return "empty"
 	df2 = df1[df1.columns.difference(["id", "unix_time", "username"])]
-	df2.name = "Stock"
 	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
 	if transaction_type == "buy":
 		df4 = df3.replace('<table border="1" class="dataframe">', '<h4>Stock Purchases</h4> <table border="1" class="dataframe" style="display: inline-block;">')
