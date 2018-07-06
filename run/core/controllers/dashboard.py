@@ -65,12 +65,21 @@ def show_sell():
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/lookup", methods=["GET"])
+@controller.route("/lookup", methods=["GET", "POST"])
 def show_lookup():
 	if "username" in session:
-		return render_template("lookup.html", \
-								title="Lookup", \
-								username=session["username"])
+		if request.method == "GET":
+			return render_template("lookup.html", \
+									title="Lookup", \
+									username=session["username"])
+		else:
+			company_name = request.form["company-name"]
+			# Attempts to lookup a ticker symbol for a given company name and stores the response.
+			response = model.lookup(company_name)
+			return render_template("lookup.html", \
+									title="Lookup", \
+									username=session["username"], \
+									response=response)
 	else:
 		return redirect(url_for("signup.show_signup"))
 

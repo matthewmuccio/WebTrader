@@ -119,6 +119,14 @@ def sell(ticker_symbol, trade_volume, username):
 	else:
 		# Returns error response.
 		return ["Sorry, you do not have the shares necessary to execute that trade."]
+	
+# Lookup
+def lookup(company_name):
+	response = wrapper.get_ticker_symbol(company_name)
+	if response == "exit":
+		return ["Sorry, the company name you entered does not have a ticker symbol."]
+	else:
+		return ["Company name: {0}".format(company_name.lower().capitalize()), "Ticker symbol: {0}".format(response)]
 
 # Calculates the new volume weighted average to update the holdings database table.
 def calculate_vwap(curr_price, curr_num_shares, new_price, new_num_shares):
