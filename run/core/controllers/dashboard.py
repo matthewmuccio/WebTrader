@@ -83,12 +83,21 @@ def show_lookup():
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/quote", methods=["GET"])
+@controller.route("/quote", methods=["GET", "POST"])
 def show_quote():
 	if "username" in session:
-		return render_template("quote.html", \
-								title="Quote", \
-								username=session["username"])
+		if request.method == "GET":
+			return render_template("quote.html", \
+									title="Quote", \
+									username=session["username"])
+		else:
+			ticker_symbol = request.form["ticker-symbol"]
+			# Attempts to lookup a ticker symbol for a given company name and stores the response.
+			response = model.quote(ticker_symbol)
+			return render_template("quote.html", \
+									title="Quote", \
+									username=session["username"], \
+									response=response)
 	else:
 		return redirect(url_for("signup.show_signup"))
 

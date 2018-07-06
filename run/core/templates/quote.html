@@ -100,6 +100,18 @@
                 <form class="form" method="POST">
                     <div class="text-center mb-4">
                         <p>Enter a ticker symbol (e.g., MSFT) to get a quote for its current stock price.</p>
+
+                        {% if response %}
+                        <div style="line-height: 6px;">
+                        {% for line in response %}
+                            {% if not "Sorry" in line %}
+                            <p style="font-size: 12px; color: green;">{{ line }}</p>
+                            {% else %}
+                            <p style="font-size: 12px; color: red;">{{ line }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
             
                     <div class="form-label-group">
