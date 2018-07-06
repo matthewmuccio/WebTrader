@@ -11,11 +11,13 @@ controller = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 @controller.route("/", methods=["GET"])
 def show_dashboard():
 	if "username" in session:
-		portfolio = model.get_orders_dataframe(session["username"], 15)
+		buy_portfolio = model.get_orders_dataframe(session["username"], "buy", 10)
+		sell_portfolio = model.get_orders_dataframe(session["username"], "sell", 10)
 		return render_template("dashboard.html", \
 								title="Home", \
-								username=session["username"],
-								portfolio=portfolio)
+								username=session["username"], \
+								buy_portfolio=buy_portfolio, \
+								sell_portfolio=sell_portfolio)
 	else:
 		return redirect(url_for("signup.show_signup"))
 

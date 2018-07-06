@@ -214,8 +214,8 @@ def get_balance(username):
 def get_holdings_dataframe(username):
 	return mapper.get_holdings_dataframe(username)
 
-def get_orders_dataframe(username, num):
-	return mapper.get_orders_dataframe(username, num)
+def get_orders_dataframe(username, num, transaction_type):
+	return mapper.get_orders_dataframe(username, num, transaction_type)
 
 def update_balance(new_balance, username):
 	return mapper.update_balance(new_balance, username)

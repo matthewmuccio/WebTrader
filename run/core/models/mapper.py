@@ -163,12 +163,17 @@ def get_holdings_dataframe(username):
 	return df3
 
 # Creates a new pandas DataFrame that contains the last 10 trades (in the orders database table) for the given user.
-def get_orders_dataframe(username, num):
+def get_orders_dataframe(username, transaction_type, num):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
-	df1 = pd.read_sql_query("SELECT * FROM ORDERS WHERE username=? ORDER BY unix_time DESC LIMIT ?", connection, params=[username, num])
+	df1 = pd.read_sql_query("SELECT * FROM orders WHERE username=? AND transaction_type=? ORDER BY unix_time DESC LIMIT ?", connection, params=[username, transaction_type, num])
 	df2 = df1[df1.columns.difference(["id", "unix_time", "username"])]
+	df2.name = "Stock"
 	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
-	return df3
+	if transaction_type == "buy":
+		df4 = df3.replace('<table border="1" class="dataframe">', '<h4>Stock Purchases</h4> <table border="1" class="dataframe" style="display: inline-block;">')
+	else:
+		df4 = df3.replace('<table border="1" class="dataframe">', '<h4>Stock Sales</h4> <table border="1" class="dataframe" style="display: inline-block;">')
+	return df4
 
 ### UPDATE / INSERT
 
