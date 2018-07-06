@@ -78,7 +78,7 @@ def sell(ticker_symbol, trade_volume, username):
 		balance_to_add = last_price * float(trade_volume) - brokerage_fee
 	except ValueError:
 		return ["Sorry, the trade volume you entered is invalid."]
-		# Error handling: if the user enters a trade volume that is negative or 0.
+	# Error handling: if the user enters a trade volume that is negative or 0.
 	if float(trade_volume) <= 0:
 		return ["Sorry, the trade volume you entered is invalid."]
 	# Checks if the user holds any stock from the company with ticker_symbol.
@@ -91,13 +91,6 @@ def sell(ticker_symbol, trade_volume, username):
 	new_number_of_shares = number_of_shares - float(trade_volume)
 	# If the user holds enough shares to complete their trade.
 	if float(trade_volume) <= number_of_shares:
-		# If the new number of shares would be 0 after the user sells their shares.
-		if new_number_of_shares == 0:
-			# Deletes the row from holdings database table for company with ticker_symbol.
-			mapper.delete_holdings_row(ticker_symbol)
-		else:
-			# Updates holdings database table with the new number of shares.
-			mapper.update_number_of_shares(new_number_of_shares, ticker_symbol, username)
 		# Gets the last price stored in the holdings database table for a given ticker_symbol.
 		curr_price = mapper.get_last_price(ticker_symbol, username)
 		# Gets the number of shares from holdings database table for the company with ticker_symbol.
@@ -109,6 +102,13 @@ def sell(ticker_symbol, trade_volume, username):
 		# Updates users database table with the new balance after selling the stock.
 		new_balance = balance + balance_to_add
 		mapper.update_balance(new_balance, username)
+		# If the new number of shares would be 0 after the user sells their shares.
+		if new_number_of_shares == 0:
+			# Deletes the row from holdings database table for company with ticker_symbol.
+			mapper.delete_holdings_row(ticker_symbol)
+		else:
+			# Updates holdings database table with the new number of shares.
+			mapper.update_number_of_shares(new_number_of_shares, ticker_symbol, username)
 		# Inserts a new row to the orders database table after selling the stock.
 		mapper.insert_orders_row("sell", ticker_symbol, trade_volume, last_price, username)
 		# Returns the success message depending on how much stock the user bought (one or multiple).
