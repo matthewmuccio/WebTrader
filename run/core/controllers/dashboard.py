@@ -104,9 +104,13 @@ def show_quote():
 @controller.route("/portfolio", methods=["GET"])
 def show_portfolio():
 	if "username" in session:
+		portfolio = model.get_holdings_dataframe(session["username"])
 		return render_template("portfolio.html", \
 								title="Portfolio", \
-								username=session["username"])
+								username=session["username"], \
+								balance=format(model.get_balance(session["username"]), ".2f"), \
+								earnings=format(model.get_earnings(session["username"]), ".2f"), \
+								portfolio=portfolio.to_html())
 	else:
 		return redirect(url_for("signup.show_signup"))
 
