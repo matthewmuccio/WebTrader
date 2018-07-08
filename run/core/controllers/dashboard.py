@@ -8,8 +8,6 @@ from core.models import model
 
 controller = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
-### User
-
 @controller.route("/", methods=["GET"])
 def show_dashboard():
 	# In session (user signed in)
@@ -150,88 +148,6 @@ def signout():
 	if "username" in session:
 		session.pop("username", None)
 		return redirect(url_for("login.show_login"))
-	# Out of session (user not signed in)
-	else:
-		return redirect(url_for("signup.show_signup"))
-
-### Admin
-
-@controller.route("/admin", methods=["GET"])
-def show_admin_dashboard():
-	# In session (user signed in)
-	if "username" in session:
-		# TODO: CODE
-		pass
-	# Out of session (user not signed in)
-	else:
-		return redirect(url_for("signup.show_signup"))
-
-@controller.route("/admin/balance", methods=["GET"])
-def show_admin_balance():
-	# In session (user signed in)
-	if "username" in session:
-		# TODO: CODE
-		pass
-	# Out of session (user not signed in)
-	else:
-		return redirect(url_for("signup.show_signup"))
-
-@controller.route("/admin/deposit", methods=["GET"])
-def show_admin_deposit():
-	# In session (user signed in)
-	if "username" in session:
-		# TODO: CODE
-		pass
-	# Out of session (user not signed in)
-	else:
-		return redirect(url_for("signup.show_signup"))
-
-@controller.route("/admin/withdraw", methods=["GET"])
-def show_admin_withdraw():
-	# In session (user signed in)
-	if "username" in session:
-		# TODO: CODE
-		pass
-	# Out of session (user not signed in)
-	else:
-		return redirect(url_for("signup.show_signup"))
-
-@controller.route("/admin/set", methods=["GET"])
-def show_admin_set():
-	# In session (user signed in)
-	if "username" in session:
-		# TODO: CODE
-		pass
-	# Out of session (user not signed in)
-	else:
-		return redirect(url_for("signup.show_signup"))
-
-@controller.route("/admin/portfolio", methods=["GET"])
-def show_admin_portfolio():
-	# In session (user signed in)
-	if "username" in session:
-		# TODO: CODE
-		pass
-	# Out of session (user not signed in)
-	else:
-		return redirect(url_for("signup.show_signup"))
-
-@controller.route("/admin/leaderboard", methods=["GET"])
-def show_admin_leaderboard():
-	# In session (user signed in)
-	if "username" in session:
-		# TODO: CODE
-		pass
-	# Out of session (user not signed in)
-	else:
-		return redirect(url_for("signup.show_signup"))
-
-@controller.route("/admin/users", methods=["GET"])
-def show_admin_users():
-	# In session (user signed in)
-	if "username" in session:
-		# TODO: CODE
-		pass
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
