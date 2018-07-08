@@ -6,15 +6,19 @@ from core.models import model
 
 controller = Blueprint("signup", __name__, url_prefix="/")
 
-@controller.route("", methods=["GET", "POST"])
+@controller.route("/", methods=["GET", "POST"])
 def show_signup():
+	# In session (user signed in)
 	if "username" in session:
 			return redirect(url_for("dashboard.show_dashboard"))
+	# Out of session (user not signed in)
 	else:
+		# GET request
 		if request.method == "GET":
 			return render_template("signup.html")
-		# Assumes it is a POST request.
+		# POST request
 		else:
+			# Accesses current form data (data transmitted in a POST request).
 			username = request.form["username"]
 			password1 = request.form["password1"]
 			password2 = request.form["password2"]
@@ -23,12 +27,13 @@ def show_signup():
 				# Attempts to create an account with the entered username and password.
 				response = model.create_account(username, password1)
 				# If the user's account has been successfully created.
-				if "Success!" in response:
+				if "Success" in response:
 					session["username"] = username
 					return redirect(url_for("dashboard.show_dashboard"))
 				# If there was an issue creating the account (username already exists, account already exists, or username was invalid).
 				else:
 					return render_template("signup.html", response=response)
+			# If the passowrds the user entered do not match.
 			else:
 				return render_template("signup.html", response=["Passwords did not match."])
 

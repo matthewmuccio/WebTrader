@@ -9,81 +9,89 @@ from core.models import model
 controller = Blueprint("admin", __name__, url_prefix="/admin")
 
 @controller.route("/", methods=["GET"])
-def show_admin_dashboard():
+def show_dashboard():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		# TODO: CODE
-		pass
+		return render_template("admin.html", \
+                                title="Home", \
+								username="admin")
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/admin/balance", methods=["GET"])
-def show_admin_balance():
+@controller.route("/balance", methods=["GET"])
+def show_balance():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		# TODO: CODE
-		pass
+		return render_template("admin.html", \
+                                title="Home", \
+								username="admin")
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/admin/deposit", methods=["GET"])
-def show_admin_deposit():
+@controller.route("/deposit", methods=["GET"])
+def show_deposit():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		# TODO: CODE
-		pass
+		return render_template("admin.html", \
+                                title="Home", \
+								username="admin")
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/admin/withdraw", methods=["GET"])
-def show_admin_withdraw():
+@controller.route("/withdraw", methods=["GET"])
+def show_withdraw():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		# TODO: CODE
-		pass
+		return render_template("admin.html", \
+                                title="Home", \
+								username="admin")
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/admin/set", methods=["GET"])
-def show_admin_set():
+@controller.route("/set", methods=["GET"])
+def show_set():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		# TODO: CODE
-		pass
+		return render_template("admin.html", \
+                                title="Home", \
+								username="admin")
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/admin/portfolio", methods=["GET"])
-def show_admin_portfolio():
+@controller.route("/portfolio", methods=["GET"])
+def show_portfolio():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		# TODO: CODE
-		pass
+		return render_template("admin.html", \
+                                title="Home", \
+								username="admin")
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/admin/leaderboard", methods=["GET"])
-def show_admin_leaderboard():
+@controller.route("/leaderboard", methods=["GET"])
+def show_leaderboard():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		# TODO: CODE
-		pass
+		return render_template("admin.html", \
+                                title="Home", \
+								username="admin")
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
 
-@controller.route("/admin/users", methods=["GET"])
-def show_admin_users():
+@controller.route("/users", methods=["GET"])
+def show_users():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		# TODO: CODE
-		pass
+		return render_template("admin.html", \
+                                title="Home", \
+								username="admin")
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
