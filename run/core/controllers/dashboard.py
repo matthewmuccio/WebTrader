@@ -108,12 +108,16 @@ def show_quote():
 @controller.route("/portfolio", methods=["GET"])
 def show_portfolio():
 	if "username" in session:
+		balance = model.get_balance(session["username"])
+		earnings = model.get_earnings(session["username"])
+		total = float(balance) + float(earnings)
 		portfolio = model.get_holdings_dataframe(session["username"])
 		return render_template("portfolio.html", \
 								title="Portfolio", \
 								username=session["username"], \
-								balance=format(model.get_balance(session["username"]), ".2f"), \
-								earnings=format(model.get_earnings(session["username"]), ".2f"), \
+								balance=format(balance, ".2f"), \
+								earnings=format(earnings, ".2f"), \
+								total=format(total, ".2f"), \
 								portfolio=portfolio)
 	else:
 		return redirect(url_for("signup.show_signup"))
