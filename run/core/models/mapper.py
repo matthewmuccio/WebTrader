@@ -103,7 +103,7 @@ def get_balance(username):
 	try:
 		balance = cursor.fetchall()[0][0]
 	except IndexError:
-		balance = "exit"
+		balance = ["Sorry, no account exists with that username."]
 	cursor.close()
 	connection.close()
 	return balance
