@@ -38,7 +38,7 @@ def create_account(username, password):
 	connection.commit()
 	cursor.close()
 	connection.close()
-	return ["Success!", "Your account has been created."]
+	return ["Success", "User"]
 
 # Logs in to account in users database table.
 def login(username, password):
@@ -46,6 +46,8 @@ def login(username, password):
 		return ["Sorry, no account exists with that username.", "Please sign up for a Web Trader account to log in."]
 	elif not account_exists(username, password):
 		return ["Sorry, the password you entered was incorrect."]
+	elif is_admin(username, password):
+		return ["Success", "Admin"]
 	password = encrypt_password(password)
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
@@ -54,7 +56,7 @@ def login(username, password):
 	cursor.close()
 	connection.close()
 	if result:
-		return ["Success!", "You have been logged in to your account."]
+		return ["Success", "User"]
 
 ### SELECT (GET)
 
@@ -78,6 +80,10 @@ def account_exists(username, password):
 	cursor.close()
 	connection.close()
 	return result
+
+# Checks if an account (username and password) is the admin account.
+def is_admin(username, password):
+	return username == "admin" and account_exists(username, password)
 
 # Checks if a username is valid.
 def valid_username(username):

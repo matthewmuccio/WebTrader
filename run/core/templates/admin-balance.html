@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-1 text-muted">
+                        <span>Admin</span>
+                        <a class="d-flex align-items-center text-muted" href="{{ url_for('admin.show_dashboard') }}">
+                            <span data-feather="monitor"></span>
+                        </a>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.show_dashboard') }}">
+                                <span data-feather="home"></span>
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('admin.show_balance') }}">
+                                <span data-feather="dollar-sign"></span>
+                                Balance
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.show_deposit') }}">
+                                <span data-feather="plus-square"></span>
+                                Deposit
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.show_withdraw') }}">
+                                <span data-feather="minus-square"></span>
+                                Withdraw
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.show_set') }}">
+                                <span data-feather="search"></span>
+                                Set
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.show_portfolio') }}">
+                                <span data-feather="bar-chart-2"></span>
+                                Portfolio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.show_leaderboard') }}">
+                                <span data-feather="list"></span>
+                                Leaderboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.show_users') }}">
+                                <span data-feather="users"></span>
+                                Users
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>About Me</span>
+                        <a class="d-flex align-items-center text-muted" href="http://www.matthewmuccio.com/" target="_blank">
+                            <span data-feather="heart"></span>
+                        </a>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="http://www.matthewmuccio.com/" target="_blank">
+                                <span data-feather="rss"></span>
+                                Website
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://www.linkedin.com/in/matthewmuccio/" target="_blank">
+                                <span data-feather="linkedin"></span>
+                                LinkedIn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://github.com/matthewmuccio" target="_blank">
+                                <span data-feather="github"></span>
+                                GitHub
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="mailto:me@matthewmuccio.com" target="_blank">
+                                <span data-feather="mail"></span>
+                                Email
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Balance</h1>
+                </div>
+
+                <div>
+                    <h2>Admin Balance Body</h2>
+                </div>
+            </main>
+        </div>
+    </div>
+{% endblock content %}
