@@ -103,9 +103,29 @@
                     <h1 class="h2">Balance</h1>
                 </div>
 
-                <div>
-                    <h2>Admin Balance Body</h2>
-                </div>
+                <form class="form" method="POST">
+                    <div class="text-center mb-4">
+                        <p>Enter a username to check their current balance.</p>
+                        {% if response %}
+                        <div style="line-height: 6px;">
+                        {% for line in response %}
+                            {% if not "Sorry" in line %}
+                            <p style="font-size: 12px; color: green;"><b>{{ user }}:</b> ${{ line }}</p>
+                            {% else %}
+                            <p style="font-size: 12px; color: red;">{{ line }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+            
+                    <div class="form-label-group">
+                        <input name="username" type="text" id="input-username" class="form-control" placeholder="Username" required autofocus>
+                        <label for="input-username">Username</label>
+                    </div>
+            
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Check Balance</button>
+                </form>
             </main>
         </div>
     </div>
