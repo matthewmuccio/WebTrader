@@ -67,6 +67,8 @@ def show_deposit():
 			balance = model.get_balance(username)
 			# If balance is a float.
 			if isinstance(balance, float):
+				# Saves the user's old (current) balance.
+				old_balance = format(balance, ".2f")
 				# Attempts to calculate the new balance.
 				new_balance = model.calculate_new_deposit(balance, amount)
 				# If new_balance is a float.
@@ -79,12 +81,13 @@ def show_deposit():
 					response = new_balance
 			# If balance is an error message.
 			else:
+				old_balance = None
 				response = balance
 			return render_template("admin-deposit.html", \
 									title="Deposit", \
 									username="Admin", \
 									user=username, \
-									old_balance=format(balance, ".2f"), \
+									old_balance=old_balance, \
 									response=response)
 	# Out of session (user not signed in)
 	else:
@@ -94,9 +97,42 @@ def show_deposit():
 def show_withdraw():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		return render_template("admin-withdraw.html", \
-                                title="Withdraw", \
-								username="Admin")
+		# GET request
+		if request.method == "GET":
+			return render_template("admin-withdraw.html", \
+									title="Withdraw", \
+									username="Admin")
+		# POST request
+		else:
+			# Accesses current form data (data transmitted in a POST request).
+			username = request.form["username"]
+			amount = request.form["amount"]
+			# Attempts to get the balance of the user with the given username.
+			balance = model.get_balance(username)
+			# If balance is a float.
+			if isinstance(balance, float):
+				# Saves the user's old (current) balance.
+				old_balance = format(balance, ".2f")
+				# Attempts to calculate the new balance.
+				new_balance = model.calculate_new_withdraw(balance, amount)
+				# If new_balance is a float.
+				if isinstance(new_balance, float):
+					response = [format(new_balance, ".2f")]
+					# Updates the user's balance in the database.
+					model.update_balance(new_balance, username)
+				# If new_balance is an error message.
+				else:
+					response = new_balance
+			# If balance is an error message.
+			else:
+				old_balance = None
+				response = balance
+			return render_template("admin-withdraw.html", \
+									title="Withdraw", \
+									username="Admin", \
+									user=username, \
+									old_balance=old_balance, \
+									response=response)
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
