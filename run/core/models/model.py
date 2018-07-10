@@ -146,12 +146,14 @@ def calculate_vwap(curr_price, curr_num_shares, new_price, new_num_shares):
 ### Admin
 # Calculates new deposit, and handles errors.
 def calculate_new_deposit(balance, balance_to_add):
-	if balance == "exit":
-		return "exit"
 	try:
-		return balance + abs(float(balance_to_add))
+		# If the balance to add is negative or 0, throw an error.
+		if float(balance_to_add) <= 0:
+			raise ValueError
+		# Otherwise return the sum of the old balance and the balance to add.
+		return balance + float(balance_to_add)
 	except (ValueError, TypeError):
-		return "exit"
+		return ["Sorry, the amount you entered is invalid."]
 
 # Calculates new withdraw, and handles errors.
 def calculate_new_withdraw(balance, balance_to_add):

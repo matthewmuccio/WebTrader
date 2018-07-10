@@ -35,7 +35,7 @@ def show_balance():
 			# Attempts to get the balance of the user with the given username.
 			balance = model.get_balance(username)
 			# If balance is a float.
-			if type(balance) == type(0.0):
+			if isinstance(balance, float):
 				response = [format(balance, ".2f")]
 			# If balance is an error message.
 			else:
@@ -53,9 +53,39 @@ def show_balance():
 def show_deposit():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		return render_template("admin-deposit.html", \
-                                title="Deposit", \
-								username="Admin")
+		# GET request
+		if request.method == "GET":
+			return render_template("admin-deposit.html", \
+									title="Deposit", \
+									username="Admin")
+		# POST request
+		else:
+			# Accesses current form data (data transmitted in a POST request).
+			username = request.form["username"]
+			amount = request.form["amount"]
+			# Attempts to get the balance of the user with the given username.
+			balance = model.get_balance(username)
+			# If balance is a float.
+			if isinstance(balance, float):
+				# Attempts to calculate the new balance.
+				new_balance = model.calculate_new_deposit(balance, amount)
+				# If new_balance is a float.
+				if isinstance(new_balance, float):
+					response = [format(new_balance, ".2f")]
+					# Updates the user's balance in the database.
+					model.update_balance(new_balance, username)
+				# If new_balance is an error message.
+				else:
+					response = new_balance
+			# If balance is an error message.
+			else:
+				response = balance
+			return render_template("admin-deposit.html", \
+									title="Deposit", \
+									username="Admin", \
+									user=username, \
+									old_balance=format(balance, ".2f"), \
+									response=response)
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
