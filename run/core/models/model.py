@@ -158,7 +158,7 @@ def calculate_new_deposit(balance, balance_to_add):
 # Calculates new withdraw, and handles errors.
 def calculate_new_withdraw(balance, balance_to_subtract):
 	try:
-		# If the balance to subtract would result in a negative balance, throw an error.
+		# If the balance to subtract is negative or 0, or would result in a negative balance, throw an error.
 		if float(balance_to_subtract) > balance or float(balance_to_subtract) <= 0:
 			raise ValueError
 		# Otherwise return the difference of the old balance and the balance to subtract.
@@ -168,12 +168,14 @@ def calculate_new_withdraw(balance, balance_to_subtract):
 
 # Calculates the new balance to set, and handles errors.
 def calculate_new_set(balance, balance_to_set):
-	if balance == "exit":
-		return "exit"
 	try:
+		# If the new balance is negative, throw an error.
+		if float(balance_to_set) < 0:
+			raise ValueError
+		# Otherwise return the balance to set as a float.
 		return float(balance_to_set)
 	except (ValueError, TypeError):
-		return "exit"
+		return ["Sorry, the balance you entered is invalid."]
 
 # Gets the portfolio earnings for a given username.
 def get_earnings(username):
