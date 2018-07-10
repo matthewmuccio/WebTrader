@@ -110,7 +110,7 @@
                         <div style="line-height: 14px;">
                         {% for line in response %}
                             {% if not "Sorry" in line %}
-                            <p style="font-size: 12px; color: green;"><b>{{ user }}</b>'s balance has been updated from ${{ old_balance }} to ${{ line }}.</p>
+                            <p style="font-size: 12px; color: green;"><b>{{ user }}</b>'s balance has been updated from <b>${{ old_balance }}</b> to <b>${{ line }}</b>.</p>
                             {% else %}
                             <p style="font-size: 12px; color: red;">{{ line }}</p>
                             {% endif %}
