@@ -146,11 +146,11 @@ def get_last_price(ticker_symbol, username):
 	connection.close()
 	return last_price
 
-# Gets a list of all Terminal Traders users in the users database table.
+# Gets a list of all Terminal Traders users in the users database table in the order they first logged in.
 def get_users():
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
-	cursor.execute("SELECT username FROM users WHERE username NOT LIKE 'admin'")
+	cursor.execute("SELECT username FROM users WHERE username NOT LIKE 'admin' ORDER BY first_login ASC")
 	users = cursor.fetchall() # List of tuples
 	users_list = [str(user[0]) for user in users] # List of strings
 	cursor.close()

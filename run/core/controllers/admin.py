@@ -185,9 +185,26 @@ def show_set():
 def show_portfolio():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
-		return render_template("admin-portfolio.html", \
-                                title="Portfolio", \
-								username="Admin")
+		# GET request
+		if request.method == "GET":
+			return render_template("admin-portfolio.html", \
+									title="Portfolio", \
+									username="Admin")
+		# POST request
+		else:
+			# Accesses current form data (data transmitted in a POST request).
+			username = request.form["username"]
+			balance = model.get_balance(username)
+			earnings = model.get_earnings(username)
+			total = float(balance) + float(earnings)
+			portfolio = model.get_holdings_dataframe(username)
+			return render_template("admin-portfolio-user.html", \
+									title="Portfolio", \
+									username=username, \
+									balance=format(balance, ".2f"), \
+									earnings=format(earnings, ".2f"), \
+									total=format(total, ".2f"), \
+									portfolio=portfolio)
 	# Out of session (user not signed in)
 	else:
 		return redirect(url_for("signup.show_signup"))
@@ -207,8 +224,10 @@ def show_leaderboard():
 def show_users():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
+		users = model.get_users()
 		return render_template("admin-users.html", \
                                 title="Users", \
+								users=users, \
 								username="Admin")
 	# Out of session (user not signed in)
 	else:

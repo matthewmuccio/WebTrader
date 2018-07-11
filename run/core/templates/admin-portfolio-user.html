@@ -43,9 +43,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('admin.show_portfolio') }}">
+                            <a class="nav-link active" href="{{ url_for('admin.show_portfolio') }}">
                                 <span data-feather="bar-chart-2"></span>
                                 Portfolio
+                                <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -55,10 +56,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ url_for('admin.show_users') }}">
+                            <a class="nav-link" href="{{ url_for('admin.show_users') }}">
                                 <span data-feather="users"></span>
                                 Users
-                                <span class="sr-only">(current)</span>
                             </a>
                         </li>
                     </ul>
@@ -100,24 +100,25 @@
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Users</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group">
-                            <a href="{{ url_for('admin.show_users') }}" class="btn btn-sm btn-outline-secondary">
-                                <span data-feather="refresh-cw"></span>
-                                Refresh
-                            </a>
-                        </div>
+                    <h1 class="h2">Portfolio</h1>
+                </div>
+                <div class="text-center">
+                    <div style="line-height: 12px">
+                        <p><b>Username: </b> {{ username }}</p>
+                        <p><b>Liquid balance:</b> ${{ balance }}</p>
+                        <p><b>Estimated earnings in portfolio:</b> ${{ earnings }}</p>
+                        <p><b>Estimated total balance:</b> ${{ total }}</p>
                     </div>
                 </div>
-
-                <div class="text-center mb-4">
-                <h4>All Web Trader Users (by Account Creation Date)</h4>
-                {% for user in users %}
-                    <p style="font-size: 16px;">{{ user }}</p>
-                {% endfor %}
-                </div>
+                <center>
+                    {% if portfolio == "empty" %}
+                        <h4 style="color: #e74c3c;">There is no stock in your portfolio to display.</h4>
+                        <h4 style="color: #e74c3c;">Navigate to the <a href="{{ url_for('dashboard.show_buy') }}">Buy menu</a> to execute a trade.</h4>
+                    {% else %}
+                    {{ portfolio | safe }}
+                    {% endif %}
+                </center>
             </main>
         </div>
     </div>
-{% endblock content %}
+{% endblock %}
