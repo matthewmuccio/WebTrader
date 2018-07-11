@@ -185,11 +185,12 @@ def get_orders_dataframe(username, transaction_type, num):
 		return "empty"
 	df2 = df1[df1.columns.difference(["id", "username"])]
 	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
+	df4 = df3.replace('<tr style="text-align: right;">', '<tr style="text-align: center;">')
 	if transaction_type == "buy":
-		df4 = df3.replace('<table border="1" class="dataframe">', '<h4>Stock Purchases</h4> <table border="1" class="dataframe" style="display: inline-block;">')
+		df5 = df4.replace('<table border="1" class="dataframe">', '<h4>Stock Purchases</h4> <table border="1" class="dataframe" style="display: inline-block;">')
 	else:
-		df4 = df3.replace('<table border="1" class="dataframe">', '<h4>Stock Sales</h4> <table border="1" class="dataframe" style="display: inline-block;">')
-	return df4
+		df5 = df4.replace('<table border="1" class="dataframe">', '<h4>Stock Sales</h4> <table border="1" class="dataframe" style="display: inline-block;">')
+	return df5
 
 ### UPDATE / INSERT
 
