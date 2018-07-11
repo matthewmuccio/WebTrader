@@ -61,6 +61,8 @@ def login(username, password):
 	cursor.close()
 	connection.close()
 	if result:
+		# Updates last_login in users database table.
+		update_last_login(username)
 		return ["Success", "User"]
 
 ### SELECT (GET)
@@ -219,6 +221,15 @@ def update_volume_weighted_average_price(new_vwap, ticker_symbol, username):
 	cursor.close()
 	connection.close()
 
+# Updates the last login time in the users database table to the current time (when the uesr logs in).
+def update_last_login(username):
+	connection = sqlite3.connect("master.db", check_same_thread=False)
+	cursor = connection.cursor()
+	cursor.execute("UPDATE users SET last_login=? WHERE username=?", (datetime.datetime.now(), username,))
+	connection.commit()
+	cursor.close()
+	connection.close()
+
 # Inserts a new row in the holdings database table.
 def insert_holdings_row(ticker_symbol, trade_volume, price, username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
@@ -238,15 +249,15 @@ def insert_holdings_row(ticker_symbol, trade_volume, price, username):
 def insert_orders_row(transaction_type, ticker_symbol, trade_volume, price, username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
-	unix_time = round(time.time(), 2)
+	transaction_time = datetime.datetime.now()
 	cursor.execute("""INSERT INTO orders(
-				unix_time,
 				transaction_type,
+				transaction_time,
 				ticker_symbol,
 				trade_volume,
 				last_price,
 				username
-			) VALUES(?,?,?,?,?,?);""", (unix_time, transaction_type, ticker_symbol.upper(), trade_volume, price, username,)
+			) VALUES(?,?,?,?,?,?);""", (transaction_type, transaction_time, ticker_symbol.upper(), trade_volume, price, username,)
 	)
 	connection.commit()
 	cursor.close()
