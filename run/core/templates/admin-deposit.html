@@ -103,9 +103,34 @@
                     <h1 class="h2">Deposit</h1>
                 </div>
 
-                <div>
-                    <h2>Admin Deposit Body</h2>
-                </div>
+                <form class="form" method="POST">
+                    <div class="text-center mb-4">
+                        <p>Enter a username and an amount to deposit into their account balance.</p>
+                        {% if response %}
+                        <div style="line-height: 14px;">
+                        {% for line in response %}
+                            {% if not "Sorry" in line %}
+                            <p style="font-size: 12px; color: green;"><b>{{ user }}</b>'s balance has been updated from <b>${{ old_balance }}</b> to <b>${{ line }}</b>.</p>
+                            {% else %}
+                            <p style="font-size: 12px; color: red;">{{ line }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+            
+                    <div class="form-label-group">
+                        <input name="username" type="text" id="input-username" class="form-control" placeholder="Username" required autofocus>
+                        <label for="input-username">Username</label>
+                    </div>
+
+                    <div class="form-label-group">
+                        <input name="amount" type="text" id="input-amount" class="form-control" placeholder="Amount" required>
+                        <label for="input-amount">Amount</label>
+                    </div>
+            
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Deposit</button>
+                </form>
             </main>
         </div>
     </div>
