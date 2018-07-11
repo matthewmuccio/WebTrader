@@ -152,6 +152,10 @@ def calculate_new_deposit(balance, balance_to_add):
 		if float(balance_to_add) > 10 ** 15:
 			errors.append("You cannot deposit more than a quadrillion (10^15) dollars into a user's account balance.")
 			raise ValueError
+		# If the sum of the balance to add and the balance is over 1,000,000,000,000,000, add error essage to list, and throw an error.
+		if float(balance_to_add) + balance > 10 ** 15:
+			errors.append("You cannot deposit a value that would allow the user's account balance to exceed a quadrillion (10^15) dollars.")
+			raise ValueError
 		# If the balance to add is negative or 0, add error message to list, and throw an error.
 		if float(balance_to_add) <= 0:
 			errors.append("You cannot deposit a non-positive value ($0 or less) into a user's account balance.")
