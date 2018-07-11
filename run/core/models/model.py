@@ -146,14 +146,20 @@ def calculate_vwap(curr_price, curr_num_shares, new_price, new_num_shares):
 ### Admin
 # Calculates new deposit, and handles errors.
 def calculate_new_deposit(balance, balance_to_add):
+	errors = ["Sorry, the amount you entered is invalid."]
 	try:
-		# If the balance to add is negative or 0, throw an error.
+		# If the balance to add is over 1,000,000,000,000,000,000 (10^15 or one quadrillion), add error message to list, and throw an error.
+		if float(balance_to_add) > 10 ** 15:
+			errors.append("You cannot deposit more than a quadrillion (10^15) dollars into a user's account balance.")
+			raise ValueError
+		# If the balance to add is negative or 0, add error message to list, and throw an error.
 		if float(balance_to_add) <= 0:
+			errors.append("You cannot deposit a non-positive value ($0 or less) into a user's account balance.")
 			raise ValueError
 		# Otherwise return the sum of the old balance and the balance to add.
 		return balance + float(balance_to_add)
 	except (ValueError, TypeError):
-		return ["Sorry, the amount you entered is invalid."]
+		return errors
 
 # Calculates new withdraw, and handles errors.
 def calculate_new_withdraw(balance, balance_to_subtract):
@@ -165,7 +171,7 @@ def calculate_new_withdraw(balance, balance_to_subtract):
 			raise ValueError
 		# If the balance to subtract is negative or 0, add error message to list, and throw an error.
 		if float(balance_to_subtract) <= 0:
-			errors.append("You cannot withdraw a non-positive value ($0 or less) from the user's account balance.")
+			errors.append("You cannot withdraw a non-positive value ($0 or less) from a user's account balance.")
 			raise ValueError
 		# Otherwise return the difference of the old balance and the balance to subtract.
 		return balance - float(balance_to_subtract)
