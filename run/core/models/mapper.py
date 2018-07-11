@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 
+import datetime
 import hashlib
 import re
 import sqlite3
@@ -25,15 +26,19 @@ def create_account(username, password):
 		return ["Sorry, the password you entered is invalid.", "Passwords must contain between 8 and 50 characters."]
 	password = encrypt_password(password)
 	default_balance = 100000.00
+	first_login = datetime.datetime.now()
+	last_login = first_login
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
 	cursor.execute(
 		"""INSERT INTO users(
 			username,
 			password,
-			balance
-			) VALUES(?,?,?);
-		""", (username, password, default_balance,)
+			balance,
+			first_login,
+			last_login
+			) VALUES(?,?,?,?,?);
+		""", (username, password, default_balance, first_login, last_login,)
 	)
 	connection.commit()
 	cursor.close()
@@ -173,10 +178,10 @@ def get_holdings_dataframe(username):
 # Creates a new pandas DataFrame that contains the last 10 trades (in the orders database table) for the given user.
 def get_orders_dataframe(username, transaction_type, num):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
-	df1 = pd.read_sql_query("SELECT * FROM orders WHERE username=? AND transaction_type=? ORDER BY unix_time DESC LIMIT ?", connection, params=[username, transaction_type, num])
+	df1 = pd.read_sql_query("SELECT * FROM orders WHERE username=? AND transaction_type=? ORDER BY transaction_time DESC LIMIT ?", connection, params=[username, transaction_type, num])
 	if df1.empty:
 		return "empty"
-	df2 = df1[df1.columns.difference(["id", "unix_time", "username"])]
+	df2 = df1[df1.columns.difference(["id", "username"])]
 	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
 	if transaction_type == "buy":
 		df4 = df3.replace('<table border="1" class="dataframe">', '<h4>Stock Purchases</h4> <table border="1" class="dataframe" style="display: inline-block;">')
