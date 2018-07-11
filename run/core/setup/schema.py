@@ -14,7 +14,7 @@ cursor.execute(
 		username VARCHAR(16) UNIQUE NOT NULL,
 		password VARCHAR(128) NOT NULL,
 		balance FLOAT NOT NULL,
-		account_created DATETIME NOT NULL,
+		first_login DATETIME NOT NULL,
 		last_login DATETIME NOT NULL
 	);"""
 )
@@ -35,8 +35,8 @@ cursor.execute(
 cursor.execute(
 	"""CREATE TABLE orders(
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		unix_time FLOAT NOT NULL
 		transaction_type VARCHAR(4) NOT NULL,
+		transaction_time DATETIME NOT NULL,
 		ticker_symbol VARCHAR(5) NOT NULL,
 		trade_volume INTEGER NOT NULL,
 		last_price FLOAT NOT NULL,
