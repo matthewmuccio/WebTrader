@@ -157,14 +157,20 @@ def calculate_new_deposit(balance, balance_to_add):
 
 # Calculates new withdraw, and handles errors.
 def calculate_new_withdraw(balance, balance_to_subtract):
+	errors = ["Sorry, the amount you entered is invalid."]
 	try:
-		# If the balance to subtract is negative or 0, or would result in a negative balance, throw an error.
-		if float(balance_to_subtract) > balance or float(balance_to_subtract) <= 0:
+		# If the balance to subtract would result in a negative balance, add error message to list, and throw an error.
+		if float(balance_to_subtract) > balance:
+			errors.append("You cannot withdraw more than the user's account balance.")
+			raise ValueError
+		# If the balance to subtract is negative or 0, add error message to list, and throw an error.
+		if float(balance_to_subtract) <= 0:
+			errors.append("You cannot withdraw a non-positive value ($0 or less) from the user's account balance.")
 			raise ValueError
 		# Otherwise return the difference of the old balance and the balance to subtract.
 		return balance - float(balance_to_subtract)
 	except (ValueError, TypeError):
-		return ["Sorry, the amount you entered is invalid."]
+		return errors
 
 # Calculates the new balance to set, and handles errors.
 def calculate_new_set(balance, balance_to_set):
