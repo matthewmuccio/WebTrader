@@ -180,14 +180,20 @@ def calculate_new_withdraw(balance, balance_to_subtract):
 
 # Calculates the new balance to set, and handles errors.
 def calculate_new_set(balance, balance_to_set):
+	errors = ["Sorry, the balance you entered is invalid."]
 	try:
-		# If the new balance is negative, throw an error.
+		# If the balance to set is over 1,000,000,000,000,000,000 (10^15 or one quadrillion), add error message to list, and throw an error.
+		if float(balance_to_set) > 10 ** 15:
+			errors.append("You cannot set a user's account balance to more than a quadrillion (10^15) dollars.")
+			raise ValueError
+		# If the new balance is negative, add error message to list, and throw an error.
 		if float(balance_to_set) < 0:
+			errors.append("You cannot set a user's account balance to a negative value.")
 			raise ValueError
 		# Otherwise return the balance to set as a float.
 		return float(balance_to_set)
 	except (ValueError, TypeError):
-		return ["Sorry, the balance you entered is invalid."]
+		return errors
 
 # Gets the portfolio earnings for a given username.
 def get_earnings(username):
