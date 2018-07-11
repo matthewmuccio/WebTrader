@@ -126,7 +126,7 @@ def lookup(company_name):
 	if response == "exit":
 		return ["Sorry, the company name you entered does not have a ticker symbol."]
 	else:
-		return ["Company name: {0}".format(company_name.lower().capitalize()), "Ticker symbol: {0}".format(response)]
+		return [company_name.lower().capitalize(), response]
 
 # Quote
 def quote(ticker_symbol):
@@ -134,7 +134,7 @@ def quote(ticker_symbol):
 	if response == "exit":
 		return ["Sorry, the ticker symbol you entered does not exist."]
 	else:
-		return ["Ticker symbol: {0}".format(ticker_symbol.upper()), "Current stock price: {0} USD".format(response)]
+		return [ticker_symbol.upper(), str(response)]
 
 # Calculates the new volume weighted average to update the holdings database table.
 def calculate_vwap(curr_price, curr_num_shares, new_price, new_num_shares):

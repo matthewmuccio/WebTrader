@@ -105,7 +105,11 @@
                         <div style="line-height: 6px;">
                         {% for line in response %}
                             {% if not "Sorry" in line %}
-                            <p style="font-size: 12px; color: green;">{{ line }}</p>
+                                {% if line.isupper() %}
+                                <p style="font-size: 12px; color: green;"><b>Ticker symbol:</b> {{ line }}</p>
+                                {% else %}
+                                <p style="font-size: 12px; color: green;"><b>Current stock price:</b> {{ line }}</p>
+                                {% endif %}
                             {% else %}
                             <p style="font-size: 12px; color: red;">{{ line }}</p>
                             {% endif %}
