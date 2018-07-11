@@ -26,7 +26,7 @@ def create_account(username, password):
 		return ["Sorry, the password you entered is invalid.", "Passwords must contain between 8 and 50 characters."]
 	password = encrypt_password(password)
 	default_balance = 100000.00
-	first_login = datetime.datetime.now()
+	first_login = datetime.datetime.now().replace(microsecond=0)
 	last_login = first_login
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
@@ -52,6 +52,7 @@ def login(username, password):
 	elif not account_exists(username, password):
 		return ["Sorry, the password you entered was incorrect."]
 	elif is_admin(username, password):
+		update_last_login(username)
 		return ["Success", "Admin"]
 	password = encrypt_password(password)
 	connection = sqlite3.connect("master.db", check_same_thread=False)
@@ -226,7 +227,7 @@ def update_volume_weighted_average_price(new_vwap, ticker_symbol, username):
 def update_last_login(username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
-	cursor.execute("UPDATE users SET last_login=? WHERE username=?", (datetime.datetime.now(), username,))
+	cursor.execute("UPDATE users SET last_login=? WHERE username=?", (datetime.datetime.now().replace(microsecond=0), username,))
 	connection.commit()
 	cursor.close()
 	connection.close()
@@ -250,7 +251,7 @@ def insert_holdings_row(ticker_symbol, trade_volume, price, username):
 def insert_orders_row(transaction_type, ticker_symbol, trade_volume, price, username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
-	transaction_time = datetime.datetime.now()
+	transaction_time = datetime.datetime.now().replace(microsecond=0)
 	cursor.execute("""INSERT INTO orders(
 				transaction_type,
 				transaction_time,
