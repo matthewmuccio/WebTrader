@@ -1,9 +1,5 @@
-# FlaskEcommerceWebApp
-A simple e-commerce web app built with the Flask web microframework and Bootstrap framework for the front-end.
-Porting my command-line application TerminalTrader (https://github.com/matthewmuccio/TerminalTrader) to a large-scale Flask web application with a front-end interface.
+WebTrader
+=========
+A simple trading web application for buying and selling stock, among other trading operations, with real market data, built using the Flask web framework, Jinja2 template engine, Bootstrap front-end framework, and Markit Data API.
 
-Process
-=======
-I plan to keep the MVC design pattern intact, and preserve the core business logic (Python code) in the model.
-I will replace the controller with the Flask web microframework.
-And I will replace the view with a front-end interface written in HTML, CSS, & JS, which resides in the templates directory.
+Porting my command-line trading application TerminalTrader (https://github.com/matthewmuccio/TerminalTrader) to a large-scale Flask web application with a front-end interface and a SQLite database back-end.
