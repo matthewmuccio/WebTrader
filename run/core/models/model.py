@@ -4,6 +4,8 @@
 from operator import itemgetter
 from math import isclose
 
+import pandas as pd
+
 from core.models import mapper
 from core.models import wrapper
 
@@ -221,6 +223,13 @@ def get_leaderboard():
 		leaderboard[user] = earnings
 	sorted_leaderboard = sorted(leaderboard.items(), key=itemgetter(1), reverse=True)
 	return sorted_leaderboard
+
+# Creates and returns a leaderboard DataFrame from a dictionary.
+def get_leaderboard_dataframe(leaderboard):
+	df1 = pd.DataFrame(leaderboard, columns=["Username", "Earnings"])
+	df2 = df1.to_html().replace('<tr>', '<tr style="text-align: center;">')
+	df3 = df2.replace('<tr style="text-align: right;">', '<tr style="text-align: center;">')
+	return df3
 
 ### Wrapper
 def get_ticker_symbol(company_name):

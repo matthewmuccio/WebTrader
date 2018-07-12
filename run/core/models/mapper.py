@@ -168,7 +168,7 @@ def get_ticker_symbols_from_user(username):
 	connection.close()
 	return ticker_symbols_list
 
-# Creates a new pandas DataFrame that contains the rows in holdings database table for the given user.
+# Creates a new pandas DataFrame (in HTML) that contains the rows in holdings database table for the given user.
 def get_holdings_dataframe(username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	df1 = pd.read_sql_query("SELECT * FROM holdings WHERE username=?", connection, params=[username])
@@ -178,7 +178,7 @@ def get_holdings_dataframe(username):
 	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
 	return df3
 
-# Creates a new pandas DataFrame that contains the last 10 trades (in the orders database table) for the given user.
+# Creates a new pandas DataFrame (in HTML) that contains the last 10 trades (in the orders database table) for the given user.
 def get_orders_dataframe(username, transaction_type, num):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	df1 = pd.read_sql_query("SELECT * FROM orders WHERE username=? AND transaction_type=? ORDER BY transaction_time DESC LIMIT ?", connection, params=[username, transaction_type, num])

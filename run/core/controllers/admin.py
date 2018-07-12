@@ -200,7 +200,8 @@ def show_portfolio():
 			portfolio = model.get_holdings_dataframe(username)
 			return render_template("admin-portfolio-user.html", \
 									title="Portfolio", \
-									username=username, \
+									username="Admin", \
+									user=username, \
 									balance=format(balance, ".2f"), \
 									earnings=format(earnings, ".2f"), \
 									total=format(total, ".2f"), \
@@ -213,8 +214,11 @@ def show_portfolio():
 def show_leaderboard():
 	# In session (user signed in) and username is admin
 	if "username" in session and session["username"] == "admin":
+		leaderboard = model.get_leaderboard()
+		df = model.get_leaderboard_dataframe(leaderboard)
 		return render_template("admin-leaderboard.html", \
                                 title="Leaderboard", \
+								leaderboard=df, \
 								username="Admin")
 	# Out of session (user not signed in)
 	else:
