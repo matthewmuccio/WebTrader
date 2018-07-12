@@ -222,7 +222,11 @@ def get_leaderboard():
 		earnings = get_earnings(user)
 		leaderboard[user] = earnings
 	sorted_leaderboard = sorted(leaderboard.items(), key=itemgetter(1), reverse=True)
-	return sorted_leaderboard
+	final_leaderboard = []
+	for (username, earnings) in sorted_leaderboard:
+		new_earnings = "$" + format(earnings, ".2f")
+		final_leaderboard.append((username, new_earnings))
+	return final_leaderboard
 
 # Creates and returns a leaderboard DataFrame from a dictionary.
 def get_leaderboard_dataframe(leaderboard):
