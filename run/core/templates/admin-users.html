@@ -111,8 +111,13 @@
                     </div>
                 </div>
 
-                <div>
-                    <h2>Admin Users Body</h2>
+                <div class="text-center mb-4">
+                    <h4>All Web Trader Users (by Account Creation Date)</h4>
+                    <div style="line-height: 16px;">
+                    {% for user in users %}
+                        <p style="font-size: 16px;">{{ user }}</p>
+                    {% endfor %}
+                    </div>
                 </div>
             </main>
         </div>

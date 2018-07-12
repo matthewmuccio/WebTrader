@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 
+import datetime
 import hashlib
 import re
 import sqlite3
@@ -25,15 +26,19 @@ def create_account(username, password):
 		return ["Sorry, the password you entered is invalid.", "Passwords must contain between 8 and 50 characters."]
 	password = encrypt_password(password)
 	default_balance = 100000.00
+	first_login = datetime.datetime.now().replace(microsecond=0)
+	last_login = first_login
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
 	cursor.execute(
 		"""INSERT INTO users(
 			username,
 			password,
-			balance
-			) VALUES(?,?,?);
-		""", (username, password, default_balance,)
+			balance,
+			first_login,
+			last_login
+			) VALUES(?,?,?,?,?);
+		""", (username, password, default_balance, first_login, last_login,)
 	)
 	connection.commit()
 	cursor.close()
@@ -47,6 +52,7 @@ def login(username, password):
 	elif not account_exists(username, password):
 		return ["Sorry, the password you entered was incorrect."]
 	elif is_admin(username, password):
+		update_last_login(username)
 		return ["Success", "Admin"]
 	password = encrypt_password(password)
 	connection = sqlite3.connect("master.db", check_same_thread=False)
@@ -56,6 +62,8 @@ def login(username, password):
 	cursor.close()
 	connection.close()
 	if result:
+		# Updates last_login in users database table.
+		update_last_login(username)
 		return ["Success", "User"]
 
 ### SELECT (GET)
@@ -138,11 +146,11 @@ def get_last_price(ticker_symbol, username):
 	connection.close()
 	return last_price
 
-# Gets a list of all Terminal Traders users in the users database table.
+# Gets a list of all Terminal Traders users in the users database table in the order they first logged in.
 def get_users():
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
-	cursor.execute("SELECT username FROM users WHERE username NOT LIKE 'admin'")
+	cursor.execute("SELECT username FROM users WHERE username NOT LIKE 'admin' ORDER BY first_login ASC")
 	users = cursor.fetchall() # List of tuples
 	users_list = [str(user[0]) for user in users] # List of strings
 	cursor.close()
@@ -160,7 +168,7 @@ def get_ticker_symbols_from_user(username):
 	connection.close()
 	return ticker_symbols_list
 
-# Creates a new pandas DataFrame that contains the rows in holdings database table for the given user.
+# Creates a new pandas DataFrame (in HTML) that contains the rows in holdings database table for the given user.
 def get_holdings_dataframe(username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	df1 = pd.read_sql_query("SELECT * FROM holdings WHERE username=?", connection, params=[username])
@@ -170,19 +178,20 @@ def get_holdings_dataframe(username):
 	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
 	return df3
 
-# Creates a new pandas DataFrame that contains the last 10 trades (in the orders database table) for the given user.
+# Creates a new pandas DataFrame (in HTML) that contains the last 10 trades (in the orders database table) for the given user.
 def get_orders_dataframe(username, transaction_type, num):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
-	df1 = pd.read_sql_query("SELECT * FROM orders WHERE username=? AND transaction_type=? ORDER BY unix_time DESC LIMIT ?", connection, params=[username, transaction_type, num])
+	df1 = pd.read_sql_query("SELECT * FROM orders WHERE username=? AND transaction_type=? ORDER BY transaction_time DESC LIMIT ?", connection, params=[username, transaction_type, num])
 	if df1.empty:
 		return "empty"
-	df2 = df1[df1.columns.difference(["id", "unix_time", "username"])]
+	df2 = df1[df1.columns.difference(["id", "username"])]
 	df3 = df2.to_html().replace('<tr>', '<tr style="text-align: center;">')
+	df4 = df3.replace('<tr style="text-align: right;">', '<tr style="text-align: center;">')
 	if transaction_type == "buy":
-		df4 = df3.replace('<table border="1" class="dataframe">', '<h4>Stock Purchases</h4> <table border="1" class="dataframe" style="display: inline-block;">')
+		df5 = df4.replace('<table border="1" class="dataframe">', '<h4>Stock Purchases</h4> <table border="1" class="dataframe" style="display: inline-block;">')
 	else:
-		df4 = df3.replace('<table border="1" class="dataframe">', '<h4>Stock Sales</h4> <table border="1" class="dataframe" style="display: inline-block;">')
-	return df4
+		df5 = df4.replace('<table border="1" class="dataframe">', '<h4>Stock Sales</h4> <table border="1" class="dataframe" style="display: inline-block;">')
+	return df5
 
 ### UPDATE / INSERT
 
@@ -214,6 +223,15 @@ def update_volume_weighted_average_price(new_vwap, ticker_symbol, username):
 	cursor.close()
 	connection.close()
 
+# Updates the last login time in the users database table to the current time (when the uesr logs in).
+def update_last_login(username):
+	connection = sqlite3.connect("master.db", check_same_thread=False)
+	cursor = connection.cursor()
+	cursor.execute("UPDATE users SET last_login=? WHERE username=?", (datetime.datetime.now().replace(microsecond=0), username,))
+	connection.commit()
+	cursor.close()
+	connection.close()
+
 # Inserts a new row in the holdings database table.
 def insert_holdings_row(ticker_symbol, trade_volume, price, username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
@@ -233,15 +251,15 @@ def insert_holdings_row(ticker_symbol, trade_volume, price, username):
 def insert_orders_row(transaction_type, ticker_symbol, trade_volume, price, username):
 	connection = sqlite3.connect("master.db", check_same_thread=False)
 	cursor = connection.cursor()
-	unix_time = round(time.time(), 2)
+	transaction_time = datetime.datetime.now().replace(microsecond=0)
 	cursor.execute("""INSERT INTO orders(
-				unix_time,
 				transaction_type,
+				transaction_time,
 				ticker_symbol,
 				trade_volume,
 				last_price,
 				username
-			) VALUES(?,?,?,?,?,?);""", (unix_time, transaction_type, ticker_symbol.upper(), trade_volume, price, username,)
+			) VALUES(?,?,?,?,?,?);""", (transaction_type, transaction_time, ticker_symbol.upper(), trade_volume, price, username,)
 	)
 	connection.commit()
 	cursor.close()

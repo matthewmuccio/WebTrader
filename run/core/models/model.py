@@ -4,6 +4,8 @@
 from operator import itemgetter
 from math import isclose
 
+import pandas as pd
+
 from core.models import mapper
 from core.models import wrapper
 
@@ -126,7 +128,7 @@ def lookup(company_name):
 	if response == "exit":
 		return ["Sorry, the company name you entered does not have a ticker symbol."]
 	else:
-		return ["Company name: {0}".format(company_name.lower().capitalize()), "Ticker symbol: {0}".format(response)]
+		return [company_name.lower().capitalize(), response]
 
 # Quote
 def quote(ticker_symbol):
@@ -134,7 +136,7 @@ def quote(ticker_symbol):
 	if response == "exit":
 		return ["Sorry, the ticker symbol you entered does not exist."]
 	else:
-		return ["Ticker symbol: {0}".format(ticker_symbol.upper()), "Current stock price: {0} USD".format(response)]
+		return [ticker_symbol.upper(), str(response)]
 
 # Calculates the new volume weighted average to update the holdings database table.
 def calculate_vwap(curr_price, curr_num_shares, new_price, new_num_shares):
@@ -146,36 +148,58 @@ def calculate_vwap(curr_price, curr_num_shares, new_price, new_num_shares):
 ### Admin
 # Calculates new deposit, and handles errors.
 def calculate_new_deposit(balance, balance_to_add):
+	errors = ["Sorry, the amount you entered is invalid."]
 	try:
-		# If the balance to add is negative or 0, throw an error.
+		# If the balance to add is over 1,000,000,000,000,000,000 (10^15 or one quadrillion), add error message to list, and throw an error.
+		if float(balance_to_add) > 10 ** 15:
+			errors.append("You cannot deposit more than a quadrillion (10^15) dollars into a user's account balance.")
+			raise ValueError
+		# If the sum of the balance to add and the balance is over 1,000,000,000,000,000, add error essage to list, and throw an error.
+		if float(balance_to_add) + balance > 10 ** 15:
+			errors.append("You cannot deposit a value that would allow the user's account balance to exceed a quadrillion (10^15) dollars.")
+			raise ValueError
+		# If the balance to add is negative or 0, add error message to list, and throw an error.
 		if float(balance_to_add) <= 0:
+			errors.append("You cannot deposit a non-positive value ($0 or less) into a user's account balance.")
 			raise ValueError
 		# Otherwise return the sum of the old balance and the balance to add.
 		return balance + float(balance_to_add)
 	except (ValueError, TypeError):
-		return ["Sorry, the amount you entered is invalid."]
+		return errors
 
 # Calculates new withdraw, and handles errors.
 def calculate_new_withdraw(balance, balance_to_subtract):
+	errors = ["Sorry, the amount you entered is invalid."]
 	try:
-		# If the balance to subtract is negative or 0, or would result in a negative balance, throw an error.
-		if float(balance_to_subtract) > balance or float(balance_to_subtract) <= 0:
+		# If the balance to subtract would result in a negative balance, add error message to list, and throw an error.
+		if float(balance_to_subtract) > balance:
+			errors.append("You cannot withdraw more than the user's account balance.")
+			raise ValueError
+		# If the balance to subtract is negative or 0, add error message to list, and throw an error.
+		if float(balance_to_subtract) <= 0:
+			errors.append("You cannot withdraw a non-positive value ($0 or less) from a user's account balance.")
 			raise ValueError
 		# Otherwise return the difference of the old balance and the balance to subtract.
 		return balance - float(balance_to_subtract)
 	except (ValueError, TypeError):
-		return ["Sorry, the amount you entered is invalid."]
+		return errors
 
 # Calculates the new balance to set, and handles errors.
 def calculate_new_set(balance, balance_to_set):
+	errors = ["Sorry, the balance you entered is invalid."]
 	try:
-		# If the new balance is negative, throw an error.
+		# If the balance to set is over 1,000,000,000,000,000,000 (10^15 or one quadrillion), add error message to list, and throw an error.
+		if float(balance_to_set) > 10 ** 15:
+			errors.append("You cannot set a user's account balance to more than a quadrillion (10^15) dollars.")
+			raise ValueError
+		# If the new balance is negative, add error message to list, and throw an error.
 		if float(balance_to_set) < 0:
+			errors.append("You cannot set a user's account balance to a negative value.")
 			raise ValueError
 		# Otherwise return the balance to set as a float.
 		return float(balance_to_set)
 	except (ValueError, TypeError):
-		return ["Sorry, the balance you entered is invalid."]
+		return errors
 
 # Gets the portfolio earnings for a given username.
 def get_earnings(username):
@@ -198,7 +222,18 @@ def get_leaderboard():
 		earnings = get_earnings(user)
 		leaderboard[user] = earnings
 	sorted_leaderboard = sorted(leaderboard.items(), key=itemgetter(1), reverse=True)
-	return sorted_leaderboard
+	final_leaderboard = []
+	for (username, earnings) in sorted_leaderboard:
+		new_earnings = "$" + format(earnings, ".2f")
+		final_leaderboard.append((username, new_earnings))
+	return final_leaderboard
+
+# Creates and returns a leaderboard DataFrame from a dictionary.
+def get_leaderboard_dataframe(leaderboard):
+	df1 = pd.DataFrame(leaderboard, columns=["Username", "Earnings"])
+	df2 = df1.to_html().replace('<tr>', '<tr style="text-align: center;">')
+	df3 = df2.replace('<tr style="text-align: right;">', '<tr style="text-align: center;">')
+	return df3
 
 ### Wrapper
 def get_ticker_symbol(company_name):

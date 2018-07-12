@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
 
 
+import datetime
 import sqlite3
 
 
 connection = sqlite3.connect("master.db", check_same_thread=False)
 cursor = connection.cursor()
+
 username = "admin"
-password = "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86"
-balance = float(1000000000)
+password = "836bc6397d06de5f635683cff01822564683b57c5298c38bd389628685d9ce9d74cba952fc80ac305a6dd1d122bb041dfa93377880d478f27b99da3fafc05bf6"
+balance = 0.0
+first_login = datetime.datetime.now().replace(microsecond=0)
+last_login = first_login
 
 cursor.execute(
 	"""INSERT INTO users(
 		username,
 		password,
-		balance
-	) VALUES(?,?,?);""", (username, password, balance,)
+		balance,
+		first_login,
+		last_login
+	) VALUES(?,?,?,?,?);""", (username, password, balance, first_login, last_login,)
 )
 
 connection.commit()

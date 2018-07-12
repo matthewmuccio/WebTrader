@@ -24,11 +24,10 @@
                                 Balance
                             </a>
                         </li>
-                        <li class="nav-item active">
-                            <a class="nav-link active" href="{{ url_for('admin.show_deposit') }}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.show_deposit') }}">
                                 <span data-feather="plus-square"></span>
                                 Deposit
-                                <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -44,9 +43,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('admin.show_portfolio') }}">
+                            <a class="nav-link active" href="{{ url_for('admin.show_portfolio') }}">
                                 <span data-feather="bar-chart-2"></span>
                                 Portfolio
+                                <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -100,38 +100,25 @@
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Deposit</h1>
+                    <h1 class="h2">Portfolio</h1>
                 </div>
-
-                <form class="form" method="POST">
-                    <div class="text-center mb-4">
-                        <p>Enter a username and an amount to deposit into their account balance.</p>
-                        {% if response %}
-                        {% for line in response %}
-                            <div style="line-height: 20px;">
-                            {% if "Sorry" in line or "You" in line %}
-                                <p style="font-size: 12px; color: red;">{{ line }}</p>
-                            {% else %}
-                                <p style="font-size: 12px; color: green;"><b>{{ user }}</b>'s balance has been updated from <b>${{ old_balance }}</b> to <b>${{ line }}</b>.</p>
-                            {% endif %}
-                            </div>
-                        {% endfor %}
-                        {% endif %}
+                <div class="text-center">
+                    <div style="line-height: 12px">
+                        <p><b>Username: </b> {{ user }}</p>
+                        <p><b>Liquid balance:</b> ${{ balance }}</p>
+                        <p><b>Estimated earnings in portfolio:</b> ${{ earnings }}</p>
+                        <p><b>Estimated total balance:</b> ${{ total }}</p>
                     </div>
-            
-                    <div class="form-label-group">
-                        <input name="username" type="text" id="input-username" class="form-control" placeholder="Username" required autofocus>
-                        <label for="input-username">Username</label>
-                    </div>
-
-                    <div class="form-label-group">
-                        <input name="amount" type="text" id="input-amount" class="form-control" placeholder="Amount" required>
-                        <label for="input-amount">Amount</label>
-                    </div>
-            
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Deposit</button>
-                </form>
+                </div>
+                <center>
+                    {% if portfolio == "empty" %}
+                        <h4 style="color: #e74c3c;">There is no stock in your portfolio to display.</h4>
+                        <h4 style="color: #e74c3c;">Navigate to the <a href="{{ url_for('dashboard.show_buy') }}">Buy menu</a> to execute a trade.</h4>
+                    {% else %}
+                    {{ portfolio | safe }}
+                    {% endif %}
+                </center>
             </main>
         </div>
     </div>
-{% endblock content %}
+{% endblock %}
