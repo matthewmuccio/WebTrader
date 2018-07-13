@@ -9,7 +9,6 @@ from core.controllers.signup import controller as signup
 from core.controllers.login import controller as login
 from core.controllers.admin import controller as admin
 from core.controllers.dashboard import controller as dashboard
-from core.controllers.search import controller as search
 
 
 def keymaker(omnibus, filename="secret_key"):
@@ -38,7 +37,6 @@ omnibus.register_blueprint(signup)
 omnibus.register_blueprint(login)
 omnibus.register_blueprint(admin)
 omnibus.register_blueprint(dashboard)
-omnibus.register_blueprint(search)
 
 # Enables debug mode.
 omnibus.config["DEBUG"] = True
