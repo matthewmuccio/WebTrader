@@ -6,26 +6,26 @@ Porting my command-line trading application TerminalTrader (https://github.com/m
 
 Screenshots
 -----------
-![webtrader-signup.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-signup.png)
 Web Trader Sign Up Page
+![webtrader-signup.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-signup.png)
 
-![webtrader-login.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-login.png)
 Web Trader Log In Page
+![webtrader-login.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-login.png)
 
-![webtrader-dashboard.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-dashboard.png)
 Web Trader User Dashboard Page
+![webtrader-dashboard.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-dashboard.png)
 
-![webtrader-buy.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-buy.png)
 Web Trader User Buy Page (Before Stock Purchase)
+![webtrader-buy.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-buy.png)
 
-![webtrader-bought.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-bought.png)
 Web Trader User Buy Page (After Stock Purchase)
+![webtrader-bought.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-bought.png)
 
-![webtrader-admin.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-admin.png)
 Web Trader Admin Dashboard Page
+![webtrader-admin.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-admin.png)
 
-![webtrader-admin-deposit.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-admin-deposit.png)
 Web Trader Admin Deposit Page (Before Deposit)
+![webtrader-admin-deposit.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-admin-deposit.png)
 
-![webtrader-admin-deposited.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-admin-deposited.png)
 Web Trader Admin Deposit Page (After Deposit)
+![webtrader-admin-deposited.png](https://github.com/matthewmuccio/WebTrader/raw/master/screenshots/webtrader-admin-deposited.png)
